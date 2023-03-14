@@ -23,7 +23,7 @@ export default class Card extends React.Component<IProps> {
         const { product } = this.props;
         return (
             <div key={product.id} className={styles.card}>
-                <div className="card__img">
+                <div className={styles.card__img}>
                     <img src={product.images[0]} alt="product" />
                 </div>
                 <div className="card__title">{product.title}</div>

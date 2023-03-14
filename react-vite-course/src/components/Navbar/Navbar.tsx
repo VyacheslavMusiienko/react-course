@@ -31,7 +31,7 @@ export default class Navbar extends React.Component {
                         </NavLink>
                     </li>
                 </ul>
-                <Search />
+                <Search buttonName="Search" />
             </nav>
         );
     }

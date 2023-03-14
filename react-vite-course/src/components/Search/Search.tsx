@@ -12,9 +12,11 @@ interface ISearchBarState {
 export default class Search extends React.Component<IProps, ISearchBarState> {
     constructor(props: IProps) {
         super(props);
+        const savedValue = localStorage.getItem('searchValue');
         this.state = {
-            searchValue: '',
+            searchValue: savedValue || '',
         };
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     componentDidMount() {
@@ -31,6 +33,7 @@ export default class Search extends React.Component<IProps, ISearchBarState> {
 
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ searchValue: event.target.value });
+        localStorage.setItem('searchValue', event.target.value);
     };
 
     public render() {

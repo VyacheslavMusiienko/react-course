@@ -5,7 +5,6 @@ import About from './about-page';
 describe('About', () => {
     it('renders About component', () => {
         render(<About />);
-        screen.debug();
         expect(screen.getByText(/About/i)).toBeInTheDocument();
     });
 });

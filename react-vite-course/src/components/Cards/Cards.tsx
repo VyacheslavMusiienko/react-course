@@ -2,9 +2,7 @@ import React from 'react';
 import Card from '../Card/Card';
 import styles from './Cards.module.scss';
 
-interface IProps {
-    title: string;
-}
+interface IProps {}
 
 interface IState {
     products: IProducts[] | null;
@@ -47,7 +45,6 @@ export default class Cards extends React.Component<IProps, IState> {
 
     public render(): React.ReactNode {
         const { products, error } = this.state;
-        const { title } = this.props;
 
         if (error) {
             return <div>{error}</div>;
@@ -58,7 +55,6 @@ export default class Cards extends React.Component<IProps, IState> {
         }
         return (
             <div className="cards">
-                <h1 className="cards__title">{title}</h1>
                 <div className={styles.cards__box}>
                     {products.map((product) => {
                         return <Card key={product.id} product={product} />;

@@ -26,12 +26,4 @@
     },
     "include": ["vite.config.ts", ".eslintrc.cjs", "src"],
     "references": [{ "path": "./tsconfig.node.json" }],
-    "rules": {
-        "@typescript-eslint/no-empty-interface": [
-            "error",
-            {
-                "allowSingleExtends": false
-            }
-        ]
-    }
 }

@@ -1,9 +1,7 @@
 import React from 'react';
 import styles from './Search.module.scss';
 
-interface IProps {
-    buttonName: string;
-}
+interface IProps {}
 
 interface ISearchBarState {
     searchValue: string;
@@ -38,7 +36,6 @@ export default class Search extends React.Component<IProps, ISearchBarState> {
 
     public render() {
         const { searchValue } = this.state;
-        const { buttonName } = this.props;
         return (
             <div className="search">
                 <input
@@ -49,7 +46,7 @@ export default class Search extends React.Component<IProps, ISearchBarState> {
                 />
 
                 <button type="button" className={styles.search__button}>
-                    {buttonName}
+                    Search
                 </button>
             </div>
         );

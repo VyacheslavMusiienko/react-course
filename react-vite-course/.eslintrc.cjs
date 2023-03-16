@@ -26,5 +26,7 @@ module.exports = {
         'react/jsx-props-no-spreading': 'off',
         '@typescript-eslint/no-empty-interface': 'off',
         'react/destructuring-assignment': 'off',
+        'react/display-name': 'off',
+        'func-names': 'off',
     },
 };

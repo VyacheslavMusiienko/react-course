@@ -1,14 +1,15 @@
 import React from 'react';
 import styles from './Search.module.scss';
 
-interface IProps {}
-
 interface ISearchBarState {
     searchValue: string;
 }
 
-export default class Search extends React.Component<IProps, ISearchBarState> {
-    constructor(props: IProps) {
+export default class Search extends React.Component<
+    Record<string, never>,
+    ISearchBarState
+> {
+    constructor(props: Record<string, never>) {
         super(props);
         const savedValue = localStorage.getItem('searchValue');
         this.state = {

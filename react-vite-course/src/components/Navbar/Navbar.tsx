@@ -1,36 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { pathParams } from '../../routes/pathParams';
+import { withRouter, WithRouterProps } from '../../utils/withRouter';
 import Search from '../Search/Search';
 import styles from './Navbar.module.scss';
 
-interface IProps {}
-interface IState {
-    title: string;
-}
-
-export default class Navbar extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-            title: '',
-        };
-    }
-
-    componentDidMount(): void {
-        if (window.location.pathname === '/') this.setState({ title: 'Main' });
-        if (window.location.pathname === '/about')
-            this.setState({ title: 'About Us' });
-    }
-
-    handleClick = () => {
-        if (window.location.pathname === '/')
-            this.setState({ title: 'About Us' });
-        if (window.location.pathname === '/about')
-            this.setState({ title: 'Main' });
-    };
-
+class Navbar extends React.Component<WithRouterProps> {
     public render() {
+        const { pathname } = this.props.location;
+        const pathName = pathname === '/' ? 'Home' : 'About Us';
         return (
             <nav className={styles.navbar}>
                 <ul className={styles.navbar__items}>
@@ -40,7 +18,6 @@ export default class Navbar extends React.Component<IProps, IState> {
                             className={({ isActive }) =>
                                 isActive ? styles.active : ''
                             }
-                            onClick={this.handleClick}
                         >
                             Main
                         </NavLink>
@@ -52,15 +29,15 @@ export default class Navbar extends React.Component<IProps, IState> {
                             className={({ isActive }) =>
                                 isActive ? styles.active : ''
                             }
-                            onClick={this.handleClick}
                         >
                             About Us
                         </NavLink>
                     </li>
                 </ul>
-                <span>{this.state.title}</span>
+                <span>{pathName}</span>
                 <Search />
             </nav>
         );
     }
 }
+export default withRouter(Navbar);

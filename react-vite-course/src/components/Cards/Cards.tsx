@@ -2,8 +2,6 @@ import React from 'react';
 import Card from '../Card/Card';
 import styles from './Cards.module.scss';
 
-interface IProps {}
-
 interface IState {
     products: IProducts[] | null;
     error: string | null;
@@ -22,8 +20,11 @@ interface IProducts {
     images: string[];
 }
 
-export default class Cards extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
+export default class Cards extends React.Component<
+    Record<string, never>,
+    IState
+> {
+    constructor(props: Record<string, never>) {
         super(props);
 
         this.state = {

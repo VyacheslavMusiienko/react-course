@@ -1,16 +1,37 @@
-import { render } from '@testing-library/react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { describe, it } from 'vitest';
-import Navbar from './Navbar';
+import LayoutMain from '../../layout/main/Layout-main';
+import About from '../../page/about-page';
+import ErrorPage from '../../page/error-page';
+import Main from '../../page/main-page';
+import { pathParams } from '../../routes/pathParams';
 
 describe('Navbar', () => {
     it('renders Navbar component', () => {
-        render(
-            <BrowserRouter>
-                <Routes>
-                    <Route element={<Navbar />} />
-                </Routes>
-            </BrowserRouter>
+        const router = createMemoryRouter(
+            [
+                {
+                    path: pathParams.main,
+                    element: <LayoutMain />,
+                    errorElement: <ErrorPage />,
+                    children: [
+                        {
+                            element: <Main />,
+                            index: true,
+                        },
+                        {
+                            element: <About />,
+                            path: pathParams.about,
+                        },
+                    ],
+                },
+            ],
+            {
+                initialEntries: ['/'],
+            }
         );
+        render(<RouterProvider router={router} />);
+        expect(screen.getByRole('button')).toBeInTheDocument();
     });
 });

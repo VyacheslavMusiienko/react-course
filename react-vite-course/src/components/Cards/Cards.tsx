@@ -32,7 +32,7 @@ export default class Cards extends React.Component<IProps, IState> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         fetch('https://dummyjson.com/products?limit=10')
             .then((response) => response.json())
             .then((products) => {

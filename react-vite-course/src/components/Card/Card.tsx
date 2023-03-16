@@ -22,7 +22,7 @@ export default class Card extends React.Component<IProps> {
     render(): React.ReactNode {
         const { product } = this.props;
         return (
-            <div key={product.id} className={styles.card}>
+            <div className={styles.card}>
                 <div className={styles.card__img}>
                     <img src={product.images[0]} alt="product" />
                 </div>

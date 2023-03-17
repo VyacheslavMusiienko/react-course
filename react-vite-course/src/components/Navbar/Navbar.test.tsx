@@ -12,7 +12,7 @@ describe('Navbar', () => {
         const router = createMemoryRouter(
             [
                 {
-                    path: pathParams.main,
+                    path: pathParams.main.path,
                     element: <LayoutMain />,
                     errorElement: <ErrorPage />,
                     children: [
@@ -22,7 +22,7 @@ describe('Navbar', () => {
                         },
                         {
                             element: <About />,
-                            path: pathParams.about,
+                            path: pathParams.about.path,
                         },
                     ],
                 },

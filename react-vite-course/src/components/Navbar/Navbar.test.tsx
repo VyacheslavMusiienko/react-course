@@ -8,30 +8,35 @@ import Main from '../../page/main-page';
 import { pathParams } from '../../routes/pathParams';
 
 describe('Navbar', () => {
-    it('renders Navbar component', () => {
-        const router = createMemoryRouter(
-            [
-                {
-                    path: pathParams.main.path,
-                    element: <LayoutMain />,
-                    errorElement: <ErrorPage />,
-                    children: [
-                        {
-                            element: <Main />,
-                            index: true,
-                        },
-                        {
-                            element: <About />,
-                            path: pathParams.about.path,
-                        },
-                    ],
-                },
-            ],
+    const router = createMemoryRouter(
+        [
             {
-                initialEntries: ['/'],
-            }
-        );
+                path: pathParams.main.path,
+                element: <LayoutMain />,
+                errorElement: <ErrorPage />,
+                children: [
+                    {
+                        element: <Main />,
+                        index: true,
+                    },
+                    {
+                        element: <About />,
+                        path: pathParams.about.path,
+                    },
+                ],
+            },
+        ],
+        {
+            initialEntries: ['/'],
+        }
+    );
+    it('renders Navbar component', () => {
         render(<RouterProvider router={router} />);
         expect(screen.getByRole('button')).toBeInTheDocument();
+    });
+    it('click navbar', async () => {
+        render(<RouterProvider router={router} />);
+        const linkEl = screen.getByRole('link', { name: 'Home' });
+        expect(linkEl.getAttribute('class')).toMatch(/active/i);
     });
 });

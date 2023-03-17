@@ -28,5 +28,7 @@ module.exports = {
         'react/destructuring-assignment': 'off',
         'react/display-name': 'off',
         'func-names': 'off',
+        'no-undef': 'off',
+        'import/no-extraneous-dependencies': 'off',
     },
 };

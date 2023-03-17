@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import LayoutMain from '../layout/main/Layout-main';
 import AboutPage from '../page/about-page';
 import ErrorPage from '../page/error-page';
+import FormPage from '../page/form-page';
 import MainPage from '../page/main-page';
 import { pathParams } from './pathParams';
 
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
             {
                 element: <AboutPage />,
                 path: pathParams.about.path,
+            },
+            {
+                element: <FormPage />,
+                path: pathParams.form.path,
             },
         ],
     },

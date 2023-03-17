@@ -28,5 +28,6 @@ module.exports = {
         'react/destructuring-assignment': 'off',
         'react/display-name': 'off',
         'func-names': 'off',
+        'jsx-a11y/label-has-associated-control': 'off',
     },
 };

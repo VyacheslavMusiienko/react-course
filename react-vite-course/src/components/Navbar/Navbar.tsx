@@ -9,13 +9,12 @@ class Navbar extends React.Component<WithRouterProps> {
     handlerNamePath = () => {
         const { pathname } = this.props.location;
 
-        if (pathname === '/') {
-            return pathParams.main.title;
-        }
-        if (pathname === '/about') {
-            return pathParams.about.title;
-        }
-        return '';
+        return Object.values(pathParams).map((value) => {
+            if (pathname === value.path) {
+                return value.title;
+            }
+            return '';
+        });
     };
 
     public render() {

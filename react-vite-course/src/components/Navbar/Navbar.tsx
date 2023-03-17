@@ -6,35 +6,38 @@ import Search from '../Search/Search';
 import styles from './Navbar.module.scss';
 
 class Navbar extends React.Component<WithRouterProps> {
-    public render() {
+    handlerNamePath = () => {
         const { pathname } = this.props.location;
-        const pathName = pathname === '/' ? 'Home' : 'About Us';
+
+        if (pathname === '/') {
+            return pathParams.main.title;
+        }
+        if (pathname === '/about') {
+            return pathParams.about.title;
+        }
+        return '';
+    };
+
+    public render() {
+        const navBar = Object.entries(pathParams).map(([key, value]) => {
+            return (
+                <li className={styles.navbar__item} key={key}>
+                    <NavLink
+                        to={value.path}
+                        className={({ isActive }) =>
+                            isActive ? styles.active : ''
+                        }
+                    >
+                        {value.title}
+                    </NavLink>
+                </li>
+            );
+        });
+
         return (
             <nav className={styles.navbar}>
-                <ul className={styles.navbar__items}>
-                    <li className={styles.navbar__item}>
-                        <NavLink
-                            to={pathParams.main}
-                            className={({ isActive }) =>
-                                isActive ? styles.active : ''
-                            }
-                        >
-                            Main
-                        </NavLink>
-                    </li>
-
-                    <li className={styles.navbar__item}>
-                        <NavLink
-                            to={pathParams.about}
-                            className={({ isActive }) =>
-                                isActive ? styles.active : ''
-                            }
-                        >
-                            About Us
-                        </NavLink>
-                    </li>
-                </ul>
-                <span>{pathName}</span>
+                <ul className={styles.navbar__items}>{navBar}</ul>
+                <span>{this.handlerNamePath()}</span>
                 <Search />
             </nav>
         );

@@ -7,7 +7,7 @@ import { pathParams } from './pathParams';
 
 export const router = createBrowserRouter([
     {
-        path: pathParams.main,
+        path: pathParams.main.path,
         element: <LayoutMain />,
         errorElement: <ErrorPage />,
         children: [
@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
             },
             {
                 element: <About />,
-                path: pathParams.about,
+                path: pathParams.about.path,
             },
         ],
     },

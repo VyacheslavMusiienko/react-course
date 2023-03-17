@@ -28,5 +28,7 @@ module.exports = {
         'react/destructuring-assignment': 'off',
         'react/display-name': 'off',
         'func-names': 'off',
+        'no-return-assign': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
     },
 };

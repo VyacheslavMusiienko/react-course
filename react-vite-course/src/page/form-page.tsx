@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default class AboutPage extends React.Component {
+export default class FormPage extends React.Component {
     render(): React.ReactNode {
-        const title = 'About';
+        const title = 'Form';
         return (
             <div>
                 <h1>{title}</h1>

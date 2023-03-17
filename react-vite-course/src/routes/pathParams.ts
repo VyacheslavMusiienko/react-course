@@ -1,4 +1,14 @@
 export const pathParams = {
-    main: '/',
-    about: '/about',
+    main: {
+        path: '/',
+        title: 'Home',
+    },
+    about: {
+        path: '/about',
+        title: 'About',
+    },
+    form: {
+        path: '/form',
+        title: 'Form',
+    },
 };

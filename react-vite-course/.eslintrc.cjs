@@ -31,5 +31,7 @@ module.exports = {
         'no-undef': 'off',
         'import/no-extraneous-dependencies': 'off',
         'consistent-return': 'off',
+        'no-return-assign': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
     },
 };

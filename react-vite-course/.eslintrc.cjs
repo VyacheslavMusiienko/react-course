@@ -31,5 +31,6 @@ module.exports = {
         'no-undef': 'off',
         'import/no-extraneous-dependencies': 'off',
         'consistent-return': 'off',
+        'jsx-a11y/label-has-associated-control': 'off',
     },
 };

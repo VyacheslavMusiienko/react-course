@@ -15,8 +15,4 @@ export const pathParams = {
         path: '/form',
         title: 'Form',
     },
-    form: {
-        path: '/form',
-        title: 'Form',
-    },
 };

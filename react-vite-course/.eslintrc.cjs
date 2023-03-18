@@ -30,5 +30,6 @@ module.exports = {
         'func-names': 'off',
         'no-undef': 'off',
         'import/no-extraneous-dependencies': 'off',
+        'consistent-return': 'off',
     },
 };

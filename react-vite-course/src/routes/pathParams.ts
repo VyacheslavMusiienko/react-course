@@ -7,4 +7,8 @@ export const pathParams = {
         path: '/about',
         title: 'About',
     },
+    error: {
+        path: '/error',
+        title: 'Error',
+    },
 };

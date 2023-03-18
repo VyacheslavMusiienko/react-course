@@ -19,6 +19,7 @@ class Navbar extends React.Component<WithRouterProps> {
 
     public render() {
         const navBar = Object.entries(pathParams).map(([key, value]) => {
+            if (value.path === '/error') return;
             return (
                 <li className={styles.navbar__item} key={key}>
                     <NavLink

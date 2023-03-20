@@ -10,6 +10,7 @@ export const pathParams = {
     error: {
         path: '/error',
         title: 'Error',
+    },
     form: {
         path: '/form',
         title: 'Form',

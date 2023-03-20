@@ -1,0 +1,31 @@
+@import '../../assets/style/index.scss';
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 10px;
+
+    &__row{
+        display: flex;
+        justify-content: space-between;
+    }
+    &__input{
+        margin: 5px 10px;
+    }
+    &__input input{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+.button{
+    &_submit{
+        margin-right: 30px;
+        background-color: $colorMainBtn;
+    }
+    &_reset{
+        background-color:$colorResetBtn;
+    }
+}

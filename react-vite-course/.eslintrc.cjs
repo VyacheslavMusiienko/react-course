@@ -33,6 +33,7 @@ module.exports = {
         'consistent-return': 'off',
         'no-return-assign': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
+        'react/button-has-type': 'off',
         'jsx-a11y/label-has-associated-control': 'off',
     },
 };

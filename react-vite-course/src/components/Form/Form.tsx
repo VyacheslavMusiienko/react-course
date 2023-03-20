@@ -1,64 +1,93 @@
 import React from 'react';
+import styles from './Form.module.scss';
 
 export default class Form extends React.Component {
     render(): React.ReactNode {
         return (
-            <form>
-                <div>
+            <form className={styles.form}>
+                <div className="form__name">
                     <h1>Form</h1>
                 </div>
-                <div>
+                <div className={styles.form__row}>
+                    <div className={`${styles.form__input} first-name`}>
+                        <label>
+                            First Name
+                            <input type="text" />
+                        </label>
+                    </div>
+                    <div className={`${styles.form__input} last-name`}>
+                        <label>
+                            Last Name
+                            <input type="text" />
+                        </label>
+                    </div>
+                    <div className={`${styles.form__input} email`}>
+                        <label>
+                            Email
+                            <input type="email" />
+                        </label>
+                    </div>
+                </div>
+                <div className={`${styles.form__input} data`}>
                     <label>
-                        First Name
-                        <input type="text" />
+                        Select your date of birth
+                        <input type="date" />
                     </label>
                 </div>
-                <div>
+                <div className={`${styles.form__input} select`}>
                     <label>
-                        Last Name
-                        <input type="text" />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Email
-                        <input type="email" name="email" id="email" />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Pick your favorite flavor:
+                        Pick your favorite action:
                         <select>
-                            <option value="grapefruit">Grapefruit</option>
-                            <option value="lime">Lime</option>
-                            <option value="coconut">Coconut</option>
-                            <option value="mango">Mango</option>
+                            <option value="make">Make money</option>
+                            <option value="spend">Spend money</option>
+                            <option value="stay">Stay at home</option>
+                            <option value="lick">Lick at home</option>
                         </select>
                     </label>
                 </div>
-                <div>
+
+                <div className={`${styles.form__input} file`}>
                     <label>
-                        <input type="radio" />
-                        you nub
+                        Choose a picture of something <input type="file" />
                     </label>
                 </div>
-                <div>
+                <div className={`${styles.form__input} radio`}>
+                    <fieldset>
+                        <legend>Select the opposite button</legend>
+                        <label>
+                            <input
+                                type="radio"
+                                checked
+                                name="opposite"
+                                value="notThis"
+                            />
+                            this button
+                        </label>
+                        <label>
+                            <input type="radio" name="opposite" value="this" />
+                            opposite button
+                        </label>
+                    </fieldset>
+                </div>
+                <div className={`${styles.form__input} checkbox`}>
                     <label>
+                        You agree to your data being sent
                         <input type="checkbox" />
-                        you n
                     </label>
                 </div>
-                <div>
-                    <label>
-                        <input type="date" />
-                        you n
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        <input type="file" />
-                        you n
-                    </label>
+                <div className="button">
+                    <button
+                        type="submit"
+                        className={`${styles.button_submit} btn`}
+                    >
+                        Submit
+                    </button>
+                    <button
+                        type="reset"
+                        className={`${styles.button_reset} btn`}
+                    >
+                        Reset
+                    </button>
                 </div>
             </form>
         );

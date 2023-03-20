@@ -1,18 +1,10 @@
 @import '../../assets/style/index.scss';
 .search{
-    &__button,&__input{
-        font-size: $fontSize;
-    }
     &__input{
-        border: none;
-        border-bottom: 2px solid $colorFont;
         height: 30px;
-        font-size: $fontSize;
         margin-right: 10px;
     }
     &__button{
-        padding: 10px 12px;
-        background-color: $colorGreen;
-        border-radius: 5px;
+        background-color: $colorMainBtn;
     }
 }

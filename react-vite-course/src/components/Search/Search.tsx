@@ -46,7 +46,10 @@ export default class Search extends React.Component<
                     onChange={this.handleInputChange}
                 />
 
-                <button type="button" className={styles.search__button}>
+                <button
+                    type="button"
+                    className={`${styles.search__button} btn`}
+                >
                     Search
                 </button>
             </div>

@@ -31,6 +31,7 @@ module.exports = {
         'no-undef': 'off',
         'import/no-extraneous-dependencies': 'off',
         'consistent-return': 'off',
+        'react/button-has-type': 'off',
         'jsx-a11y/label-has-associated-control': 'off',
     },
 };

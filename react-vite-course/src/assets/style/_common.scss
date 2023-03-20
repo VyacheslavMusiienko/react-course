@@ -1,4 +1,14 @@
 #root {
     max-width: 1280px;
     margin: 0 auto;
+    font-size: $fontSize;
+}
+input{
+    border-bottom: 2px solid $colorFont;
+    font-size: $fontSize;
+}
+.btn{
+    padding: 10px 12px;
+    border-radius: 5px;
+    font-size: $fontSize;
 }

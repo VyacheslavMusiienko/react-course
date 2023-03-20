@@ -28,7 +28,10 @@ module.exports = {
         'react/destructuring-assignment': 'off',
         'react/display-name': 'off',
         'func-names': 'off',
-        'no-return-assign': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
+        'no-undef': 'off',
+        'import/no-extraneous-dependencies': 'off',
+        'consistent-return': 'off',
+        'react/button-has-type': 'off',
+        'jsx-a11y/label-has-associated-control': 'off',
     },
 };

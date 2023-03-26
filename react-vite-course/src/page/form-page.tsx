@@ -27,9 +27,6 @@ export default class FormPage extends React.Component<
             <>
                 <Form addNewUser={this.addNewUser} />
                 <Users users={this.state.users} />
-                {/* {this.state.users.map((user) => (
-                    <p key={user.first}>{user.first}</p>
-                ))} */}
             </>
         );
     }

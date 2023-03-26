@@ -43,17 +43,22 @@ export default class Form extends React.Component<FormProps, FormState> {
             countryError: null,
             agreementError: null,
             fileError: null,
+            isSaved: false,
         };
     }
 
     validateText = (refValue: string, stateProp: string) => {
         let error = '';
+        const regex = /^[ \d]+/;
 
         if (refValue.length < 2 || refValue.length > 10)
             error = 'Must contain 2-10 characters';
 
         if (refValue && startsWithCapital(refValue)) {
             error = 'First letter must be capitalized';
+        }
+        if (regex.test(refValue)) {
+            error = 'Invalid input';
         }
 
         if (!refValue) error = 'Required field';
@@ -143,11 +148,16 @@ export default class Form extends React.Component<FormProps, FormState> {
                 file,
             };
             addNewUser(newUser);
+            this.setState({ isSaved: true });
+            setTimeout(() => {
+                this.setState({ isSaved: false });
+            }, 2000);
             this.form.current?.reset();
         }
     };
 
     render(): React.ReactNode {
+        const { isSaved } = this.state;
         return (
             <form
                 className={styles.form}
@@ -228,6 +238,7 @@ export default class Form extends React.Component<FormProps, FormState> {
                         Reset
                     </button>
                 </div>
+                {isSaved && <span>The data has been saved</span>}
             </form>
         );
     }

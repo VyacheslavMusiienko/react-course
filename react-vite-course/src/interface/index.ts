@@ -14,4 +14,5 @@ export interface FormState {
     countryError: null | string;
     fileError: null | string;
     agreementError: null | string;
+    isSaved: boolean;
 }

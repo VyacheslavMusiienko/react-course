@@ -1,6 +1,7 @@
 import React from 'react';
 import { IUser } from '../../interface';
 import { User } from '../User/User';
+import styles from './Users.module.scss';
 
 interface UsersProps {
     users: IUser[];
@@ -12,6 +13,6 @@ export class Users extends React.Component<UsersProps> {
             <User user={user} key={index} />
         ));
 
-        return <div>{usersLayout}</div>;
+        return <div className={styles.wrapper}>{usersLayout}</div>;
     }
 }

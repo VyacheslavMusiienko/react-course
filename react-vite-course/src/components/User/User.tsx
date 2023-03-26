@@ -1,5 +1,6 @@
 import React from 'react';
 import { IUser } from '../../interface';
+import styles from './User.module.scss';
 
 interface UserProps {
     user: IUser;
@@ -8,13 +9,11 @@ interface UserProps {
 export class User extends React.Component<UserProps> {
     render() {
         const { first, last, data, country, gender, file } = this.props.user;
-        const imgSrc = file
-            ? URL.createObjectURL(file)
-            : './svg/empty-user.svg';
+        const imgSrc = file ? URL.createObjectURL(file) : '';
 
         return (
-            <article>
-                <section>
+            <article className={styles.wrapper}>
+                <section className={styles.wrapper__img}>
                     <img src={imgSrc} alt={first} />
                 </section>
                 <section>

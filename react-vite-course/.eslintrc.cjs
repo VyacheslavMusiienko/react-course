@@ -35,5 +35,9 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'off',
         'react/button-has-type': 'off',
         'jsx-a11y/label-has-associated-control': 'off',
+        '@typescript-eslint/lines-between-class-members': 'off',
+        'react/require-default-props': 'off',
+        'react/no-access-state-in-setstate': 'off',
+        'react/no-array-index-key': 'off',
     },
 };

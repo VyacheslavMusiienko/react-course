@@ -7,31 +7,32 @@ interface IProps extends React.HTMLProps<HTMLInputElement> {
 
 const SelectorCustom = React.forwardRef<HTMLSelectElement, IProps>(
     (props, ref) => {
+        const { errorMess } = props;
         const countries = ['Ukraine', 'Russia', 'Belarus', 'Other country'];
-
         const countriesLayout = countries.map((country, index) => (
             <option value={country} key={index}>
                 {country}
             </option>
         ));
-        const { errorMess } = props;
 
         return (
-            <label className={`${styles.form__input}`}>
-                Country:
-                <select
-                    name="country"
-                    id="country"
-                    ref={ref}
-                    defaultValue="none"
-                >
-                    <option disabled value="none" style={{ display: 'none' }}>
-                        -- select an option --
-                    </option>
-                    {countriesLayout}
-                </select>
+            <div>
+                <label className={`${styles.form__input}`}>
+                    Country:
+                    <select
+                        name="country"
+                        id="country"
+                        ref={ref}
+                        defaultValue=""
+                    >
+                        <option disabled value="" style={{ display: 'none' }}>
+                            -- select an option --
+                        </option>
+                        {countriesLayout}
+                    </select>
+                </label>
                 {errorMess && <span>{errorMess}</span>}
-            </label>
+            </div>
         );
     }
 );

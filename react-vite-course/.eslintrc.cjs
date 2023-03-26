@@ -39,5 +39,6 @@ module.exports = {
         'react/require-default-props': 'off',
         'react/no-access-state-in-setstate': 'off',
         'react/no-array-index-key': 'off',
+        'class-methods-use-this': 'off',
     },
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IUser } from '../../interface';
+import { FormState, IUser } from '../../interface';
 import startsWithCapital from '../../utils/startsWithCapital';
 import styles from './Form.module.scss';
 import InputCustom from './InputCustom/InputCustom';
@@ -8,157 +8,141 @@ import SelectorCustom from './SelectCustom/SelectCustom';
 interface FormProps {
     addNewUser: (user: IUser) => void;
 }
-interface FormState {
-    errorFirst: null | string;
-    errorLast: null | string;
-    errorData: null | string;
-    errorGender: null | string;
-    errorCountry: null | string;
-    errorFile: null | string;
-    errorAgree: null | string;
-    allNotNull: boolean;
-}
 
 export default class Form extends React.Component<FormProps, FormState> {
     form: React.RefObject<HTMLFormElement>;
-    first: React.RefObject<HTMLInputElement>;
-    last: React.RefObject<HTMLInputElement>;
-    data: React.RefObject<HTMLInputElement>;
+    name: React.RefObject<HTMLInputElement>;
+    surname: React.RefObject<HTMLInputElement>;
+    birthday: React.RefObject<HTMLInputElement>;
     file: React.RefObject<HTMLInputElement>;
     radioMale: React.RefObject<HTMLInputElement>;
     radioFemale: React.RefObject<HTMLInputElement>;
-    errorAgree: React.RefObject<HTMLInputElement>;
+    agreement: React.RefObject<HTMLInputElement>;
     country: React.RefObject<HTMLSelectElement>;
 
     constructor(props: FormProps) {
         super(props);
 
         this.form = React.createRef();
-        this.first = React.createRef();
-        this.last = React.createRef();
-        this.data = React.createRef();
+        this.name = React.createRef();
+        this.surname = React.createRef();
+        this.birthday = React.createRef();
         this.file = React.createRef();
         this.radioMale = React.createRef();
         this.radioFemale = React.createRef();
-        this.errorAgree = React.createRef();
+        this.agreement = React.createRef();
         this.country = React.createRef();
 
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
-            errorFirst: null,
-            errorLast: null,
-            errorData: null,
-            errorGender: null,
-            errorCountry: null,
-            errorAgree: null,
-            errorFile: null,
-            allNotNull: false,
+            nameError: null,
+            surnameError: null,
+            birthdayError: null,
+            genderError: null,
+            countryError: null,
+            agreementError: null,
+            fileError: null,
         };
     }
 
-    checkAllNotNull = () => {
-        const allNotNull = Object.values(this.state).some(
-            (item) => item !== null
-        );
-        this.setState({ allNotNull });
-        return allNotNull;
+    validateText = (refValue: string, stateProp: string) => {
+        let error = '';
+
+        if (refValue.length < 2 || refValue.length > 10)
+            error = 'Must contain 2-10 characters';
+
+        if (refValue && startsWithCapital(refValue)) {
+            error = 'First letter must be capitalized';
+        }
+
+        if (!refValue) error = 'Required field';
+
+        this.setState((prevState) => ({
+            ...prevState,
+            [stateProp]: error,
+        }));
+
+        return !!error;
     };
-    handlerFilter = () => {
-        if (!this.first.current?.value.trim()) {
-            this.setState({ errorFirst: 'Enter a name' }, this.checkAllNotNull);
-        } else if (
-            this.first.current !== undefined &&
-            startsWithCapital(this.first.current.value.trim()) === false
-        ) {
-            this.setState(
-                { errorFirst: 'Type with a capital letter' },
-                this.checkAllNotNull
-            );
-        } else {
-            this.setState({ errorFirst: null }, this.checkAllNotNull);
-        }
+    validateRequired = (
+        refValue: string | boolean | null,
+        stateProp: string
+    ) => {
+        let error = '';
 
-        if (!this.last.current?.value.trim()) {
-            this.setState({ errorLast: 'Enter a name' }, this.checkAllNotNull);
-        } else if (
-            this.last.current !== undefined &&
-            startsWithCapital(this.last.current.value.trim()) === false
-        ) {
-            this.setState(
-                { errorLast: 'Type with a capital letter' },
-                this.checkAllNotNull
-            );
-        } else {
-            this.setState({ errorLast: null }, this.checkAllNotNull);
-        }
+        if (!refValue) error = 'Required field';
 
-        if (!this.data.current?.valueAsDate) {
-            this.setState(
-                { errorData: 'Enter the date' },
-                this.checkAllNotNull
-            );
-        } else {
-            this.setState({ errorData: null }, this.checkAllNotNull);
-        }
-        if (this.country.current?.value === 'none') {
-            this.setState(
-                { errorCountry: 'Enter the country' },
-                this.checkAllNotNull
-            );
-        } else {
-            this.setState({ errorCountry: null }, this.checkAllNotNull);
-        }
+        this.setState((prevState) => ({
+            ...prevState,
+            [stateProp]: error,
+        }));
 
-        if (!this.file.current?.files?.[0]) {
-            this.setState(
-                { errorFile: 'Please, upload card image' },
-                this.checkAllNotNull
-            );
-        } else {
-            this.setState({ errorFile: null }, this.checkAllNotNull);
-        }
-
-        if (
-            this.radioMale.current?.checked === false &&
-            this.radioFemale.current?.checked === false
-        ) {
-            this.setState(
-                { errorGender: 'Choose a gender' },
-                this.checkAllNotNull
-            );
-        } else {
-            this.setState({ errorGender: null }, this.checkAllNotNull);
-        }
-
-        if (this.errorAgree.current?.checked === false) {
-            this.setState(
-                { errorAgree: 'Choose a language' },
-                this.checkAllNotNull
-            );
-        } else {
-            this.setState({ errorAgree: null }, this.checkAllNotNull);
-        }
+        return !!error;
     };
+    validateFile = (refValue: Blob | undefined, prop: string) => {
+        let error = '';
+
+        if (!refValue?.type.includes('image')) error = 'Must be an image';
+
+        if (!refValue) error = 'Required field';
+
+        this.setState((prevState) => ({
+            ...prevState,
+            [prop]: error,
+        }));
+
+        return !!error;
+    };
+    getGender = (
+        genderRefArray: React.RefObject<HTMLInputElement>[]
+    ): string | null => {
+        let gender = null;
+
+        genderRefArray.forEach((genderEl) => {
+            if (genderEl.current?.checked) {
+                gender = genderEl.current.value;
+            }
+        });
+
+        return gender;
+    };
+
     handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        this.handlerFilter();
-        const genderVal = this.radioFemale.current?.checked
-            ? this.radioFemale.current?.value
-            : this.radioMale.current?.value;
+        const { addNewUser } = this.props;
+        const name = this.name.current?.value || '';
+        const surname = this.surname.current?.value || '';
+        const birthday = this.birthday.current?.value || '';
+        const country = this.country.current?.value || '';
+        const agreement = this.agreement.current?.checked || false;
+        const gender: string | null = this.getGender([
+            this.radioMale,
+            this.radioFemale,
+        ]);
+        const file = this.file.current?.files?.[0];
 
-        if (this.state.allNotNull) {
-            const newUser: IUser = {
-                first: this.first.current?.value,
-                last: this.last.current?.value,
-                data: this.data.current?.value,
-                file: this.file.current?.files?.[0],
-                country: this.country.current?.value,
-                agree: this.errorAgree.current?.checked,
-                gender: genderVal,
+        const validateForm = [
+            this.validateText(name, 'nameError'),
+            this.validateText(surname, 'surnameError'),
+            this.validateRequired(birthday, 'birthdayError'),
+            this.validateRequired(agreement, 'agreementError'),
+            this.validateRequired(country, 'countryError'),
+            this.validateRequired(gender, 'genderError'),
+            this.validateFile(file, 'fileError'),
+        ].includes(true);
+
+        if (!validateForm) {
+            const newUser = {
+                name,
+                surname,
+                birthday,
+                country,
+                gender,
+                file,
             };
-            this.props.addNewUser(newUser);
+            addNewUser(newUser);
             this.form.current?.reset();
         }
     };
@@ -177,27 +161,27 @@ export default class Form extends React.Component<FormProps, FormState> {
                     <InputCustom
                         title="First Name:"
                         placeholder="Enter first name"
-                        ref={this.first}
-                        errorMess={this.state.errorFirst}
+                        ref={this.name}
+                        errorMess={this.state.nameError}
                     />
                     <InputCustom
                         title="Last Name:"
                         placeholder="Enter last name"
-                        ref={this.last}
-                        errorMess={this.state.errorLast}
+                        ref={this.surname}
+                        errorMess={this.state.surnameError}
                     />
                 </div>
                 <InputCustom
                     title="Select your date of birth:"
                     type="date"
-                    ref={this.data}
-                    errorMess={this.state.errorData}
+                    ref={this.birthday}
+                    errorMess={this.state.birthdayError}
                 />
                 <InputCustom
                     title="Choose a picture of something:"
                     type="file"
                     ref={this.file}
-                    errorMess={this.state.errorFile}
+                    errorMess={this.state.fileError}
                 />
                 <div className={styles.form__row}>
                     <h1>Gender:</h1>
@@ -214,7 +198,7 @@ export default class Form extends React.Component<FormProps, FormState> {
                         name="gender"
                         value="female"
                         ref={this.radioFemale}
-                        errorMess={this.state.errorGender}
+                        errorMess={this.state.genderError}
                     />
                 </div>
                 <div className={styles.form__row}>
@@ -222,13 +206,13 @@ export default class Form extends React.Component<FormProps, FormState> {
                     <InputCustom
                         title="agree"
                         type="checkbox"
-                        ref={this.errorAgree}
-                        errorMess={this.state.errorAgree}
+                        ref={this.agreement}
+                        errorMess={this.state.agreementError}
                     />
                 </div>
                 <SelectorCustom
                     ref={this.country}
-                    errorMess={this.state.errorCountry}
+                    errorMess={this.state.countryError}
                 />
                 <div className="button">
                     <button

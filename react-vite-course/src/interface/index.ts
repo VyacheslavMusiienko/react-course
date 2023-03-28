@@ -16,3 +16,16 @@ export interface FormState {
     agreementError: null | string;
     isSaved: boolean;
 }
+export interface IProducts {
+    id: number;
+    title: string;
+    description: string;
+    price: number;
+    discountPercentage: number;
+    rating: number;
+    stock: number;
+    brand: string;
+    category: string;
+    thumbnail: string;
+    images: string[];
+}

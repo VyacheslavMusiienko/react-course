@@ -40,5 +40,6 @@ module.exports = {
         'react/no-access-state-in-setstate': 'off',
         'react/no-array-index-key': 'off',
         'class-methods-use-this': 'off',
+        'react/function-component-definition': 'off',
     },
 };

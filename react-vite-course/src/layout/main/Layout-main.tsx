@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
 
-const LayoutMain = () => {
+const LayoutMain: React.FC = () => {
     return (
         <>
             <header className="header">

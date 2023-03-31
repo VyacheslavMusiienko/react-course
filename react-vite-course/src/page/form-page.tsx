@@ -1,33 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Form from '../components/Form/Form';
 import { Users } from '../components/Users/Users';
 import { IUser } from '../interface';
 
-interface IState {
-    users: IUser[];
-}
+const FormPage: React.FC = () => {
+    const [users, setUsers] = useState<IUser[]>([]);
 
-export default class FormPage extends React.Component<
-    Record<string, never>,
-    IState
-> {
-    constructor(props: Record<string, never>) {
-        super(props);
-        this.state = {
-            users: [],
-        };
-    }
-    addNewUser = (newUser: IUser) => {
-        this.setState((prevState) => {
-            return { ...prevState, users: [...prevState.users, newUser] };
-        });
+    const addNewUser = (newUser: IUser) => {
+        setUsers((prevUsers) => [...prevUsers, newUser]);
     };
-    render(): React.ReactNode {
-        return (
-            <>
-                <Form addNewUser={this.addNewUser} />
-                <Users users={this.state.users} />
-            </>
-        );
-    }
-}
+    return (
+        <>
+            <Form addNewUser={addNewUser} />
+            <Users users={users} />
+        </>
+    );
+};
+export default FormPage;

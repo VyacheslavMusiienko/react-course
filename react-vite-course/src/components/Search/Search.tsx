@@ -1,58 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Search.module.scss';
 
-interface ISearchBarState {
-    searchValue: string;
-}
-
-export default class Search extends React.Component<
-    Record<string, never>,
-    ISearchBarState
-> {
-    constructor(props: Record<string, never>) {
-        super(props);
+const Search = () => {
+    const [search, setSearch] = useState<string>(() => {
         const savedValue = localStorage.getItem('searchValue');
-        this.state = {
-            searchValue: savedValue || '',
-        };
-        this.handleInputChange = this.handleInputChange.bind(this);
-    }
+        return savedValue || '';
+    });
 
-    componentDidMount() {
-        const savedValue = localStorage.getItem('searchValue');
-        if (savedValue) {
-            this.setState({ searchValue: savedValue });
-        }
-    }
+    useEffect(() => {
+        localStorage.setItem('searchValue', search);
+    }, [search]);
 
-    componentWillUnmount() {
-        const { searchValue } = this.state;
-        localStorage.setItem('searchValue', searchValue);
-    }
-
-    handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ searchValue: event.target.value });
-        localStorage.setItem('searchValue', event.target.value);
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(event.target.value);
     };
 
-    public render() {
-        const { searchValue } = this.state;
-        return (
-            <div className="search">
-                <input
-                    type="text"
-                    className={styles.search__input}
-                    value={searchValue}
-                    onChange={this.handleInputChange}
-                />
+    return (
+        <div className="search">
+            <input
+                type="text"
+                className={styles.search__input}
+                value={search}
+                onChange={handleInputChange}
+            />
 
-                <button
-                    type="button"
-                    className={`${styles.search__button} btn`}
-                >
-                    Search
-                </button>
-            </div>
-        );
-    }
-}
+            <button type="button" className={`${styles.search__button} btn`}>
+                Search
+            </button>
+        </div>
+    );
+};
+export default Search;

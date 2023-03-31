@@ -1,67 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { IProducts } from '../../interface';
 import Card from '../Card/Card';
 import styles from './Cards.module.scss';
 
-interface IState {
-    products: IProducts[] | null;
-    error: string | null;
-}
-interface IProducts {
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
-    stock: number;
-    brand: string;
-    category: string;
-    thumbnail: string;
-    images: string[];
-}
+const Cards: React.FC = () => {
+    const [products, setProducts] = useState<IProducts[] | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
-export default class Cards extends React.Component<
-    Record<string, never>,
-    IState
-> {
-    constructor(props: Record<string, never>) {
-        super(props);
-
-        this.state = {
-            products: null,
-            error: null,
-        };
-    }
-
-    componentDidMount(): void {
+    useEffect(() => {
         fetch('https://dummyjson.com/products?limit=10')
             .then((response) => response.json())
-            .then((products) => {
-                this.setState({ products: products.products });
+            .then((data) => {
+                setProducts(data.products);
             })
-            .catch((error) => {
-                this.setState({ error: error.message });
+            .catch((errors) => {
+                setError(errors.message);
             });
+    }, []);
+
+    if (error) {
+        return <div>{error}</div>;
     }
 
-    public render(): React.ReactNode {
-        const { products, error } = this.state;
+    if (!products) {
+        return <div>Loading...</div>;
+    }
 
-        if (error) {
-            return <div>{error}</div>;
-        }
-
-        if (!products) {
-            return <div>Loading...</div>;
-        }
-        return (
-            <div className="cards">
-                <div className={styles.cards__box}>
-                    {products.map((product) => {
-                        return <Card key={product.id} product={product} />;
-                    })}
-                </div>
+    return (
+        <div className="cards">
+            <div className={styles.cards__box}>
+                {products.map((product) => {
+                    return <Card key={product.id} product={product} />;
+                })}
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
+
+export default Cards;

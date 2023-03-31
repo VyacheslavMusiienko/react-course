@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { describe, it } from 'vitest';
 import { IUser } from '../../interface';
-import { User } from './User';
+import User from './User';
 
 describe('User', () => {
     it('renders Card component', () => {

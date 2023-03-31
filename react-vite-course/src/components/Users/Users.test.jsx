@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { describe, it } from 'vitest';
-import { Users } from './Users';
+import Users from './Users';
 
 describe('Users', () => {
     it('renders Users component', () => {

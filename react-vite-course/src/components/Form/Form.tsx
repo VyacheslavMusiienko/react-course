@@ -1,6 +1,9 @@
-import React from 'react';
-import { FormState, IUser } from '../../interface';
-import startsWithCapital from '../../utils/startsWithCapital';
+import React, { useEffect, useRef, useState } from 'react';
+import { IUser } from '../../interface';
+import { getGender } from '../../utils/getGender';
+import { validateFile } from '../../utils/validateFile';
+import { validateRequired } from '../../utils/validateRequired';
+import { validateText } from '../../utils/validationText';
 import styles from './Form.module.scss';
 import InputCustom from './InputCustom/InputCustom';
 import SelectorCustom from './SelectCustom/SelectCustom';
@@ -8,238 +11,138 @@ import SelectorCustom from './SelectCustom/SelectCustom';
 interface FormProps {
     addNewUser: (user: IUser) => void;
 }
+const Form: React.FC<FormProps> = ({ addNewUser }) => {
+    const [nameError, setNameError] = useState<string>('');
+    const [surnameError, setSurnameError] = useState<string>('');
+    const [birthdayError, setBirthdayError] = useState<string>('');
+    const [genderError, setGenderError] = useState<string>('');
+    const [countryError, setCountryError] = useState<string>('');
+    const [agreementError, setAgreementError] = useState<string>('');
+    const [fileError, setFileError] = useState<string>('');
+    const [isSaved, setIsSaved] = useState<boolean>(false);
 
-export default class Form extends React.Component<FormProps, FormState> {
-    form: React.RefObject<HTMLFormElement>;
-    name: React.RefObject<HTMLInputElement>;
-    surname: React.RefObject<HTMLInputElement>;
-    birthday: React.RefObject<HTMLInputElement>;
-    file: React.RefObject<HTMLInputElement>;
-    radioMale: React.RefObject<HTMLInputElement>;
-    radioFemale: React.RefObject<HTMLInputElement>;
-    agreement: React.RefObject<HTMLInputElement>;
-    country: React.RefObject<HTMLSelectElement>;
+    const form = useRef<HTMLFormElement>(null);
+    const name = useRef<HTMLInputElement>(null);
+    const surname = useRef<HTMLInputElement>(null);
+    const birthday = useRef<HTMLInputElement>(null);
+    const file = useRef<HTMLInputElement>(null);
+    const radioMale = useRef<HTMLInputElement>(null);
+    const radioFemale = useRef<HTMLInputElement>(null);
+    const agreement = useRef<HTMLInputElement>(null);
+    const country = useRef<HTMLSelectElement>(null);
 
-    constructor(props: FormProps) {
-        super(props);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsSaved(false);
+        }, 2000);
+        return () => clearTimeout(timer);
+    }, [isSaved]);
 
-        this.form = React.createRef();
-        this.name = React.createRef();
-        this.surname = React.createRef();
-        this.birthday = React.createRef();
-        this.file = React.createRef();
-        this.radioMale = React.createRef();
-        this.radioFemale = React.createRef();
-        this.agreement = React.createRef();
-        this.country = React.createRef();
-
-        this.handleSubmit = this.handleSubmit.bind(this);
-
-        this.state = {
-            nameError: null,
-            surnameError: null,
-            birthdayError: null,
-            genderError: null,
-            countryError: null,
-            agreementError: null,
-            fileError: null,
-            isSaved: false,
-        };
-    }
-
-    validateText = (refValue: string, stateProp: string) => {
-        let error = '';
-        const regex = /^[ \d]+/;
-
-        if (refValue.length < 2 || refValue.length > 10)
-            error = 'Must contain 2-10 characters';
-
-        if (refValue && startsWithCapital(refValue)) {
-            error = 'First letter must be capitalized';
-        }
-        if (regex.test(refValue)) {
-            error = 'Invalid input';
-        }
-
-        if (!refValue) error = 'Required field';
-
-        this.setState((prevState) => ({
-            ...prevState,
-            [stateProp]: error,
-        }));
-
-        return !!error;
-    };
-    validateRequired = (
-        refValue: string | boolean | null,
-        stateProp: string
-    ) => {
-        let error = '';
-
-        if (!refValue) error = 'Required field';
-
-        this.setState((prevState) => ({
-            ...prevState,
-            [stateProp]: error,
-        }));
-
-        return !!error;
-    };
-    validateFile = (refValue: Blob | undefined, prop: string) => {
-        let error = '';
-
-        if (!refValue?.type.includes('image')) error = 'Must be an image';
-
-        if (!refValue) error = 'Required field';
-
-        this.setState((prevState) => ({
-            ...prevState,
-            [prop]: error,
-        }));
-
-        return !!error;
-    };
-    getGender = (
-        genderRefArray: React.RefObject<HTMLInputElement>[]
-    ): string | null => {
-        let gender = null;
-
-        genderRefArray.forEach((genderEl) => {
-            if (genderEl.current?.checked) {
-                gender = genderEl.current.value;
-            }
-        });
-
-        return gender;
-    };
-
-    handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const { addNewUser } = this.props;
-        const name = this.name.current?.value || '';
-        const surname = this.surname.current?.value || '';
-        const birthday = this.birthday.current?.value || '';
-        const country = this.country.current?.value || '';
-        const agreement = this.agreement.current?.checked || false;
-        const gender: string | null = this.getGender([
-            this.radioMale,
-            this.radioFemale,
-        ]);
-        const file = this.file.current?.files?.[0];
+        const nameCurr = name.current?.value || '';
+        const surnameCurr = surname.current?.value || '';
+        const birthdayCurr = birthday.current?.value || '';
+        const countryCurr = country.current?.value || '';
+        const agreementCurr = agreement.current?.checked || false;
+        const genderCurr: string | null = getGender([radioMale, radioFemale]);
+        const fileCurr = file.current?.files?.[0];
 
         const validateForm = [
-            this.validateText(name, 'nameError'),
-            this.validateText(surname, 'surnameError'),
-            this.validateRequired(birthday, 'birthdayError'),
-            this.validateRequired(agreement, 'agreementError'),
-            this.validateRequired(country, 'countryError'),
-            this.validateRequired(gender, 'genderError'),
-            this.validateFile(file, 'fileError'),
+            validateText(nameCurr, setNameError),
+            validateText(surnameCurr, setSurnameError),
+            validateRequired(birthdayCurr, setBirthdayError),
+            validateRequired(agreementCurr, setAgreementError),
+            validateRequired(countryCurr, setCountryError),
+            validateRequired(genderCurr, setGenderError),
+            validateFile(fileCurr, setFileError),
         ].includes(true);
 
         if (!validateForm) {
-            const newUser = {
-                name,
-                surname,
-                birthday,
-                country,
-                gender,
-                file,
+            const newUser: IUser = {
+                name: nameCurr,
+                surname: surnameCurr,
+                birthday: birthdayCurr,
+                country: countryCurr,
+                gender: genderCurr,
+                file: fileCurr,
             };
             addNewUser(newUser);
-            this.setState({ isSaved: true });
-            setTimeout(() => {
-                this.setState({ isSaved: false });
-            }, 2000);
-            this.form.current?.reset();
+            setIsSaved(true);
+            form.current?.reset();
         }
     };
 
-    render(): React.ReactNode {
-        const { isSaved } = this.state;
-        return (
-            <form
-                className={styles.form}
-                onSubmit={this.handleSubmit}
-                ref={this.form}
-            >
-                <div className="form__name">
-                    <h1>Form</h1>
-                </div>
-                <div className={styles.form__row}>
-                    <InputCustom
-                        title="First Name:"
-                        placeholder="Enter first name"
-                        ref={this.name}
-                        errorMess={this.state.nameError}
-                    />
-                    <InputCustom
-                        title="Last Name:"
-                        placeholder="Enter last name"
-                        ref={this.surname}
-                        errorMess={this.state.surnameError}
-                    />
-                </div>
+    return (
+        <form className={styles.form} onSubmit={handleSubmit} ref={form}>
+            <div className="form__name">
+                <h1>Form</h1>
+            </div>
+            <div className={styles.form__row}>
                 <InputCustom
-                    title="Select your date of birth:"
-                    type="date"
-                    ref={this.birthday}
-                    errorMess={this.state.birthdayError}
+                    title="First Name:"
+                    placeholder="Enter first name"
+                    ref={name}
+                    errorMess={nameError}
                 />
                 <InputCustom
-                    title="Choose a picture of something:"
-                    type="file"
-                    ref={this.file}
-                    errorMess={this.state.fileError}
+                    title="Last Name:"
+                    placeholder="Enter last name"
+                    ref={surname}
+                    errorMess={surnameError}
                 />
-                <div className={styles.form__row}>
-                    <h1>Gender:</h1>
-                    <InputCustom
-                        type="radio"
-                        title="Male"
-                        name="gender"
-                        value="male"
-                        ref={this.radioMale}
-                    />
-                    <InputCustom
-                        type="radio"
-                        title="Female"
-                        name="gender"
-                        value="female"
-                        ref={this.radioFemale}
-                        errorMess={this.state.genderError}
-                    />
-                </div>
-                <div className={styles.form__row}>
-                    <h1>You agree to your data being sent</h1>
-                    <InputCustom
-                        title="agree"
-                        type="checkbox"
-                        ref={this.agreement}
-                        errorMess={this.state.agreementError}
-                    />
-                </div>
-                <SelectorCustom
-                    ref={this.country}
-                    errorMess={this.state.countryError}
+            </div>
+            <InputCustom
+                title="Select your date of birth:"
+                type="date"
+                ref={birthday}
+                errorMess={birthdayError}
+            />
+            <InputCustom
+                title="Choose a picture of something:"
+                type="file"
+                ref={file}
+                errorMess={fileError}
+            />
+            <div className={styles.form__row}>
+                <h1>Gender:</h1>
+                <InputCustom
+                    type="radio"
+                    title="Male"
+                    name="gender"
+                    value="male"
+                    ref={radioMale}
                 />
-                <div className="button">
-                    <button
-                        type="submit"
-                        className={`${styles.button_submit} btn`}
-                    >
-                        Submit
-                    </button>
-                    <button
-                        type="reset"
-                        className={`${styles.button_reset} btn`}
-                    >
-                        Reset
-                    </button>
-                </div>
-                {isSaved && <span>The data has been saved</span>}
-            </form>
-        );
-    }
-}
+                <InputCustom
+                    type="radio"
+                    title="Female"
+                    name="gender"
+                    value="female"
+                    ref={radioFemale}
+                    errorMess={genderError}
+                />
+            </div>
+            <div className={styles.form__row}>
+                <h1>You agree to your data being sent</h1>
+                <InputCustom
+                    title="agree"
+                    type="checkbox"
+                    ref={agreement}
+                    errorMess={agreementError}
+                />
+            </div>
+            <SelectorCustom ref={country} errorMess={countryError} />
+            <div className="button">
+                <button type="submit" className={`${styles.button_submit} btn`}>
+                    Submit
+                </button>
+                <button type="reset" className={`${styles.button_reset} btn`}>
+                    Reset
+                </button>
+            </div>
+            {isSaved && <span>The data has been saved</span>}
+        </form>
+    );
+};
+export default Form;

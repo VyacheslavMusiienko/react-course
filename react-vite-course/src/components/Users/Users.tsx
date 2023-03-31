@@ -7,12 +7,11 @@ interface UsersProps {
     users: IUser[];
 }
 
-export class Users extends React.Component<UsersProps> {
-    render() {
-        const usersLayout = this.props.users.map((user, index) => (
-            <User user={user} key={index} />
-        ));
+const Users: React.FC<UsersProps> = ({ users }) => {
+    const usersLayout = users.map((user, index) => (
+        <User user={user} key={index} />
+    ));
 
-        return <div className={styles.wrapper}>{usersLayout}</div>;
-    }
-}
+    return <div className={styles.wrapper}>{usersLayout}</div>;
+};
+export default Users;

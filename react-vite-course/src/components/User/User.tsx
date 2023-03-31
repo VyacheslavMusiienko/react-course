@@ -6,45 +6,24 @@ interface UserProps {
     user: IUser;
 }
 
-export default class User extends React.Component<UserProps> {
-    render() {
-        const { name, surname, birthday, country, gender, file } =
-            this.props.user;
-        const imgSrc = file ? URL.createObjectURL(file) : '';
+const User: React.FC<UserProps> = ({ user }) => {
+    const { name, surname, birthday, country, gender, file } = user;
+    const imgSrc = file ? URL.createObjectURL(file) : '';
 
-        return (
-            <article className={styles.wrapper}>
-                <section className={styles.wrapper__img}>
-                    <img src={imgSrc} alt={name} />
-                </section>
-                <section>
-                    <h3>
-                        {name} {surname}
-                    </h3>
-                    <p>Gender: {gender}</p>
-                    <p>Birthday: {birthday?.toString()}</p>
-                    <p>Country: {country}</p>
-                </section>
-            </article>
-        );
-    }
-}
-// const User = ({ name, surname, birthday, country, gender, file }: IUser) => {
-//     const imgSrc = file ? URL.createObjectURL(file) : '';
-//     return (
-//         <article className={styles.wrapper}>
-//             <section className={styles.wrapper__img}>
-//                 <img src={imgSrc} alt={name} />
-//             </section>
-//             <section>
-//                 <h3>
-//                     {name} {surname}
-//                 </h3>
-//                 <p>Gender: {gender}</p>
-//                 <p>Birthday: {birthday?.toString()}</p>
-//                 <p>Country: {country}</p>
-//             </section>
-//         </article>
-//     );
-// };
-// export default User;
+    return (
+        <article className={styles.wrapper}>
+            <section className={styles.wrapper__img}>
+                <img src={imgSrc} alt={name} />
+            </section>
+            <section>
+                <h3>
+                    {name} {surname}
+                </h3>
+                <p>Gender: {gender}</p>
+                <p>Birthday: {birthday?.toString()}</p>
+                <p>Country: {country}</p>
+            </section>
+        </article>
+    );
+};
+export default User;

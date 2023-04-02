@@ -1,10 +1,9 @@
-import React from 'react';
-import { NavLink, useLocation, useNavigation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { pathParams } from '../../routes/pathParams';
 import Search from '../Search/Search';
 import styles from './Navbar.module.scss';
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
     const location = useLocation();
 
     const handlerNamePath = () => {

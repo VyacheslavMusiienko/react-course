@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IProducts } from '../../interface';
 import Card from '../Card/Card';
 import styles from './Cards.module.scss';
 
-const Cards: React.FC = () => {
+const Cards = () => {
     const [products, setProducts] = useState<IProducts[] | null>(null);
     const [error, setError] = useState<string | null>(null);
 

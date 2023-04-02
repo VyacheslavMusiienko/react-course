@@ -4,7 +4,7 @@ import styles from './Card.module.scss';
 interface IProps {
     product: IProducts;
 }
-const Card: React.FC<IProps> = (product) => {
+const Card = (product: IProps) => {
     const { title, price, images } = product.product;
     return (
         <div className={styles.card}>

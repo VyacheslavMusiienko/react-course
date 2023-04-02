@@ -1,4 +1,3 @@
-import React from 'react';
 import { IUser } from '../../interface';
 import styles from './User.module.scss';
 
@@ -6,7 +5,7 @@ interface UserProps {
     user: IUser;
 }
 
-const User: React.FC<UserProps> = ({ user }) => {
+const User = ({ user }: UserProps) => {
     const { name, surname, birthday, country, gender, file } = user;
     const imgSrc = file ? URL.createObjectURL(file) : '';
 

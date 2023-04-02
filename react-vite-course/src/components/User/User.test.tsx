@@ -11,7 +11,7 @@ describe('User', () => {
             birthday: '2023-03-15',
             country: 'Ukraine',
             gender: 'female',
-            file: undefined,
+            picture: undefined,
         };
         render(<User user={user} key={1} />);
     });

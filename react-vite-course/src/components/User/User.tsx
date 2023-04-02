@@ -1,10 +1,6 @@
 import { IUser } from '../../interface';
 import styles from './User.module.scss';
 
-// export type TUserCard = Omit<IUser, 'picture'> & {
-//     picture: File;
-// };
-
 interface UserProps {
     user: IUser;
 }

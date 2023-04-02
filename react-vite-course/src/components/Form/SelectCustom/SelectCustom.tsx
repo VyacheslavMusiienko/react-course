@@ -1,39 +1,29 @@
 import React from 'react';
+import { UseFormRegister } from 'react-hook-form';
 import styles from '../Form.module.scss';
 
-interface IProps extends React.HTMLProps<HTMLInputElement> {
-    errorMess?: string | null;
+interface IFormInput {
+    country: string;
 }
 
-const SelectorCustom = React.forwardRef<HTMLSelectElement, IProps>(
-    (props, ref) => {
-        const { errorMess } = props;
-        const countries = ['Ukraine', 'Russia', 'Belarus', 'Other country'];
-        const countriesLayout = countries.map((country, index) => (
-            <option value={country} key={index}>
-                {country}
-            </option>
-        ));
-
-        return (
-            <div>
-                <label className={`${styles.form__input}`}>
-                    Country:
-                    <select
-                        name="country"
-                        id="country"
-                        ref={ref}
-                        defaultValue=""
-                    >
-                        <option disabled value="" style={{ display: 'none' }}>
-                            -- select an option --
-                        </option>
-                        {countriesLayout}
-                    </select>
-                </label>
-                {errorMess && <span>{errorMess}</span>}
-            </div>
-        );
-    }
-);
+const SelectorCustom = React.forwardRef<
+    HTMLSelectElement,
+    ReturnType<UseFormRegister<IFormInput>>
+>(({ onChange, name }, ref) => {
+    return (
+        <div>
+            <label className={`${styles.form__input}`}>
+                Country:
+                <select name={name} id="country" ref={ref} onChange={onChange}>
+                    <option value="Ukraine" defaultValue="Ukraine">
+                        Ukraine
+                    </option>
+                    <option value="Russia">Russia</option>
+                    <option value="Belarus">Belarus</option>
+                    <option value="Other country">Other country</option>
+                </select>
+            </label>
+        </div>
+    );
+});
 export default SelectorCustom;

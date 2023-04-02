@@ -3,10 +3,9 @@ import styles from '../Form.module.scss';
 
 interface IProps extends React.HTMLProps<HTMLInputElement> {
     title: string;
-    errorMess?: string | null;
 }
 const InputCustom = React.forwardRef<HTMLInputElement, IProps>((props, ref) => {
-    const { title, errorMess, ...restProps } = props;
+    const { title, ...restProps } = props;
 
     return (
         <div className={`${styles.form__input}`}>
@@ -14,7 +13,6 @@ const InputCustom = React.forwardRef<HTMLInputElement, IProps>((props, ref) => {
                 {title}
                 <input {...restProps} ref={ref} />
             </label>
-            {errorMess && <span>{errorMess}</span>}
         </div>
     );
 });

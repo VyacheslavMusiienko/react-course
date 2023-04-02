@@ -1,9 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { IUser } from '../../interface';
-import { getGender } from '../../utils/getGender';
-import { validateFile } from '../../utils/validateFile';
-import { validateRequired } from '../../utils/validateRequired';
-import { validateText } from '../../utils/validationText';
 import styles from './Form.module.scss';
 import InputCustom from './InputCustom/InputCustom';
 import SelectorCustom from './SelectCustom/SelectCustom';
@@ -11,71 +7,44 @@ import SelectorCustom from './SelectCustom/SelectCustom';
 interface FormProps {
     addNewUser: (user: IUser) => void;
 }
-const Form: React.FC<FormProps> = ({ addNewUser }) => {
-    const [nameError, setNameError] = useState<string>('');
-    const [surnameError, setSurnameError] = useState<string>('');
-    const [birthdayError, setBirthdayError] = useState<string>('');
-    const [genderError, setGenderError] = useState<string>('');
-    const [countryError, setCountryError] = useState<string>('');
-    const [agreementError, setAgreementError] = useState<string>('');
-    const [fileError, setFileError] = useState<string>('');
-    const [isSaved, setIsSaved] = useState<boolean>(false);
-
-    const form = useRef<HTMLFormElement>(null);
-    const name = useRef<HTMLInputElement>(null);
-    const surname = useRef<HTMLInputElement>(null);
-    const birthday = useRef<HTMLInputElement>(null);
-    const file = useRef<HTMLInputElement>(null);
-    const radioMale = useRef<HTMLInputElement>(null);
-    const radioFemale = useRef<HTMLInputElement>(null);
-    const agreement = useRef<HTMLInputElement>(null);
-    const country = useRef<HTMLSelectElement>(null);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsSaved(false);
-        }, 2000);
-        return () => clearTimeout(timer);
-    }, [isSaved]);
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        const nameCurr = name.current?.value || '';
-        const surnameCurr = surname.current?.value || '';
-        const birthdayCurr = birthday.current?.value || '';
-        const countryCurr = country.current?.value || '';
-        const agreementCurr = agreement.current?.checked || false;
-        const genderCurr: string | null = getGender([radioMale, radioFemale]);
-        const fileCurr = file.current?.files?.[0];
-
-        const validateForm = [
-            validateText(nameCurr, setNameError),
-            validateText(surnameCurr, setSurnameError),
-            validateRequired(birthdayCurr, setBirthdayError),
-            validateRequired(agreementCurr, setAgreementError),
-            validateRequired(countryCurr, setCountryError),
-            validateRequired(genderCurr, setGenderError),
-            validateFile(fileCurr, setFileError),
-        ].includes(true);
-
-        if (!validateForm) {
-            const newUser: IUser = {
-                name: nameCurr,
-                surname: surnameCurr,
-                birthday: birthdayCurr,
-                country: countryCurr,
-                gender: genderCurr,
-                file: fileCurr,
-            };
-            addNewUser(newUser);
-            setIsSaved(true);
-            form.current?.reset();
-        }
+type TUserCard = Omit<IUser, 'picture'> & {
+    agreement: string;
+    picture: FileList;
+};
+const Form = ({ addNewUser }: FormProps) => {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<TUserCard>({
+        mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
+        defaultValues: {
+            name: '',
+            surname: '',
+            birthday: '',
+            gender: '',
+            agreement: '',
+            picture: undefined,
+            country: '',
+        },
+    });
+    const onSubmit: SubmitHandler<TUserCard> = async (data: TUserCard) => {
+        const newUser: IUser = {
+            name: data.name,
+            surname: data.surname,
+            birthday: data.birthday,
+            country: data.country,
+            gender: data.gender,
+            picture: data?.picture?.[0],
+        };
+        addNewUser(newUser);
+        reset();
     };
-
     return (
-        <form className={styles.form} onSubmit={handleSubmit} ref={form}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+            <label>First Name</label>
             <div className="form__name">
                 <h1>Form</h1>
             </div>
@@ -83,56 +52,83 @@ const Form: React.FC<FormProps> = ({ addNewUser }) => {
                 <InputCustom
                     title="First Name:"
                     placeholder="Enter first name"
-                    ref={name}
-                    errorMess={nameError}
+                    {...register('name', {
+                        required: 'Required field',
+                        minLength: {
+                            value: 3,
+                            message: 'minimum of 3 characters',
+                        },
+                    })}
                 />
+                {errors.name && <span>{errors.name.message}</span>}
+
                 <InputCustom
                     title="Last Name:"
                     placeholder="Enter last name"
-                    ref={surname}
-                    errorMess={surnameError}
+                    {...register('surname', {
+                        required: 'Required field',
+                        minLength: {
+                            value: 3,
+                            message: 'minimum of 3 characters',
+                        },
+                    })}
                 />
+                {errors.surname && <span>{errors.surname.message}</span>}
             </div>
             <InputCustom
                 title="Select your date of birth:"
                 type="date"
-                ref={birthday}
-                errorMess={birthdayError}
+                {...register('birthday', {
+                    required: 'Required field',
+                })}
             />
+            {errors.birthday && <span>{errors.birthday.message}</span>}
+
             <InputCustom
                 title="Choose a picture of something:"
                 type="file"
-                ref={file}
-                errorMess={fileError}
+                accept="image/*"
+                {...register('picture')}
             />
+            {errors.picture && <span>{errors.picture.message}</span>}
             <div className={styles.form__row}>
                 <h1>Gender:</h1>
                 <InputCustom
                     type="radio"
                     title="Male"
-                    name="gender"
                     value="male"
-                    ref={radioMale}
+                    {...register('gender', {
+                        required: 'Required field',
+                    })}
                 />
                 <InputCustom
                     type="radio"
                     title="Female"
-                    name="gender"
                     value="female"
-                    ref={radioFemale}
-                    errorMess={genderError}
+                    {...register('gender', {
+                        required: 'Required field',
+                    })}
                 />
+                {errors.gender && <span>{errors.gender.message}</span>}
             </div>
             <div className={styles.form__row}>
                 <h1>You agree to your data being sent</h1>
                 <InputCustom
                     title="agree"
                     type="checkbox"
-                    ref={agreement}
-                    errorMess={agreementError}
+                    {...register('agreement', {
+                        required: 'Required field',
+                    })}
                 />
+                {errors.agreement && <span>{errors.agreement.message}</span>}
             </div>
-            <SelectorCustom ref={country} errorMess={countryError} />
+            <SelectorCustom
+                {...register('country', {
+                    required: 'Required field',
+                })}
+            />
+            {errors.country && <span>{errors.country.message}</span>}
+
             <div className="button">
                 <button type="submit" className={`${styles.button_submit} btn`}>
                     Submit
@@ -141,7 +137,6 @@ const Form: React.FC<FormProps> = ({ addNewUser }) => {
                     Reset
                 </button>
             </div>
-            {isSaved && <span>The data has been saved</span>}
         </form>
     );
 };

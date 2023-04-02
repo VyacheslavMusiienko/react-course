@@ -1,13 +1,17 @@
 import { IUser } from '../../interface';
 import styles from './User.module.scss';
 
+// export type TUserCard = Omit<IUser, 'picture'> & {
+//     picture: File;
+// };
+
 interface UserProps {
     user: IUser;
 }
 
 const User = ({ user }: UserProps) => {
-    const { name, surname, birthday, country, gender, file } = user;
-    const imgSrc = file ? URL.createObjectURL(file) : '';
+    const { name, surname, birthday, country, gender, picture } = user;
+    const imgSrc = picture ? URL.createObjectURL(picture) : '';
 
     return (
         <article className={styles.wrapper}>

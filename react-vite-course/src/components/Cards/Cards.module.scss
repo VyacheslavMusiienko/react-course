@@ -1,0 +1,8 @@
+@import '../../assets/style/index.scss';
+
+.cards{
+    &__box{
+        display:flex;
+        flex-wrap:wrap;
+    }
+}

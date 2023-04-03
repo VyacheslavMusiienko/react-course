@@ -1,0 +1,32 @@
+@import '../../assets/style/index.scss';
+
+.navbar{
+    width: 100%;
+    margin: 5px 20px;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+
+    &__items{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    &__item {
+        float: left;
+
+        & a {
+        display: block;
+        color: $colorFont;
+        text-align: center;
+        padding: 10px 12px;
+        text-decoration: none;
+        }
+    }
+}
+.active {
+    background-color: $colorMainBtn;
+    border-radius: 5px;
+}

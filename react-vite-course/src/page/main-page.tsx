@@ -1,6 +1,12 @@
 import Cards from '../components/Cards/Cards';
+import Search from '../components/Search/Search';
 
-const MainPage: React.FC = () => {
-    return <Cards />;
+const MainPage = () => {
+    return (
+        <>
+            <Search />
+            <Cards />
+        </>
+    );
 };
 export default MainPage;

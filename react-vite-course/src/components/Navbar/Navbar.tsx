@@ -1,6 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { pathParams } from '../../routes/pathParams';
-import Search from '../Search/Search';
 import styles from './Navbar.module.scss';
 
 const Navbar = () => {
@@ -33,7 +32,6 @@ const Navbar = () => {
         <nav className={styles.navbar}>
             <ul className={styles.navbar__items}>{navBar}</ul>
             <span>{handlerNamePath()}</span>
-            <Search />
         </nav>
     );
 };

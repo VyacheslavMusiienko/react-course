@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './Search.module.scss';
 
 const Search = () => {
-    const [search, setSearch] = useState<string>(() => {
-        const savedValue = localStorage.getItem('searchValue');
-        return savedValue || '';
-    });
+    const initSearchValue: string = localStorage.getItem('searchValue') || '';
+    const [searchValue, setSearchValue] = useState(initSearchValue);
+    const searchRef = useRef<string>(searchValue);
 
     useEffect(() => {
-        localStorage.setItem('searchValue', search);
-    }, [search]);
+        return function saveToLS() {
+            const currentSearchValue = searchRef?.current || '';
+            localStorage.setItem('searchValue', currentSearchValue);
+        };
+    }, []);
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearch(event.target.value);
+    const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const newSearchValue = e.target.value.trimStart();
+        setSearchValue(newSearchValue);
+        searchRef.current = newSearchValue;
     };
 
     return (
@@ -20,8 +24,8 @@ const Search = () => {
             <input
                 type="text"
                 className={styles.search__input}
-                value={search}
-                onChange={handleInputChange}
+                value={searchValue}
+                onChange={onSearchChange}
             />
 
             <button type="button" className={`${styles.search__button} btn`}>

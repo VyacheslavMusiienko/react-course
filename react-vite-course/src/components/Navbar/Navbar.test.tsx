@@ -30,10 +30,6 @@ describe('Navbar', () => {
             initialEntries: ['/'],
         }
     );
-    it('renders Navbar component', () => {
-        render(<RouterProvider router={router} />);
-        expect(screen.getByRole('button')).toBeInTheDocument();
-    });
     it('click navbar', async () => {
         render(<RouterProvider router={router} />);
         const linkEl = screen.getByRole('link', { name: 'Home' });

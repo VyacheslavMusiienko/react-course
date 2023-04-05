@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { IProducts } from '../../interface';
 import Card from '../Card/Card';
 import Search from '../Search/Search';
@@ -10,9 +9,6 @@ const Cards = () => {
     // const [search, setSearch] = useState(initSearchValue);
     const [products, setProducts] = useState<IProducts[] | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [searchParams, setSearchParams] = useSearchParams();
-
-    const searchQuery = searchParams.get('search') || '';
 
     useEffect(() => {
         // if (search.length === 0) {
@@ -36,7 +32,6 @@ const Cards = () => {
     }, []);
 
     const handleSearch = async (searchValue: string) => {
-        setSearchParams({ search: searchValue });
         fetch(`https://dummyjson.com/products/search?q=${searchValue}`)
             .then((response) => response.json())
             .then((data) => {
@@ -60,13 +55,9 @@ const Cards = () => {
             <Search onSearch={handleSearch} />
             <div className={styles.cards__box}>
                 {products.length > 0 ? (
-                    products
-                        .filter((product) =>
-                            product.title.includes(searchQuery)
-                        )
-                        .map((product) => {
-                            return <Card key={product.id} product={product} />;
-                        })
+                    products.map((product) => {
+                        return <Card key={product.id} product={product} />;
+                    })
                 ) : (
                     <div>No cards found</div>
                 )}

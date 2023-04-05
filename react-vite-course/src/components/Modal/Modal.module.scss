@@ -1,0 +1,40 @@
+@import '../../assets/style/index.scss';
+
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+
+    &__overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    &__box {
+        position: relative;
+        border-radius: 10px;
+        width: 30%;
+        margin: 0 10%;
+        padding: 20px;
+        box-sizing: border-box;
+        background-color: aliceblue;
+        cursor: auto;
+    }
+    &__close{
+        display: flex;
+        justify-content: flex-end;
+
+        &_btn{
+            font-size: x-large;
+        }
+    }
+}

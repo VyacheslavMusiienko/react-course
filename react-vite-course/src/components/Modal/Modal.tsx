@@ -10,7 +10,7 @@ interface IModalProps {
 
 const Modal = ({ isOpen, onClose, idCard }: IModalProps) => {
     const [product, setProduct] = useState<IProducts | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const [errorM, setErrorM] = useState<string | null>(null);
 
     useEffect(() => {
         if (isOpen) {
@@ -20,14 +20,14 @@ const Modal = ({ isOpen, onClose, idCard }: IModalProps) => {
                     setProduct(data);
                 })
                 .catch((errors) => {
-                    setError(errors.message);
+                    setErrorM(errors.message);
                 });
         }
     }, [idCard, isOpen]);
 
     const renderModalContent = () => {
-        if (error) {
-            return <div>{error}</div>;
+        if (errorM) {
+            return <div>{errorM}</div>;
         }
 
         if (!product) {

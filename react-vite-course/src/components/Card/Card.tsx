@@ -10,6 +10,7 @@ const Card = (product: IProps) => {
     const { title, price, images, id } = product.product;
     const [isModalOpen, setModalState] = useState(false);
     const toggleModal = () => setModalState(!isModalOpen);
+
     return (
         <div className={styles.card} onClick={toggleModal}>
             <div className={styles.card__img}>

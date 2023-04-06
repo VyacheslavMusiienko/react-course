@@ -10,12 +10,12 @@ const Search = ({ onSearch }: ISearchProps) => {
     const [searchValue, setSearchValue] = useState(initSearchValue);
     const searchRef = useRef<string>(searchValue);
 
-    useEffect(() => {
-        return function saveToLS() {
-            const currentSearchValue = searchRef?.current || '';
-            localStorage.setItem('searchValue', currentSearchValue);
-        };
-    }, []);
+    // useEffect(() => {
+    //     return function saveToLS() {
+    //         const currentSearchValue = searchRef?.current || '';
+    //         localStorage.setItem('searchValue', currentSearchValue);
+    //     };
+    // }, []);
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const newSearchValue = e.target.value.trimStart();

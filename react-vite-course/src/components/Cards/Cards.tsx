@@ -5,13 +5,10 @@ import Search from '../Search/Search';
 import styles from './Cards.module.scss';
 
 const Cards = () => {
-    // const initSearchValue: string = localStorage.getItem('searchValue') || '';
-    // const [search, setSearch] = useState(initSearchValue);
     const [products, setProducts] = useState<IProducts[] | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // if (search.length === 0) {
         fetch('https://dummyjson.com/products?limit=10')
             .then((response) => response.json())
             .then((data) => {
@@ -20,15 +17,6 @@ const Cards = () => {
             .catch((errors) => {
                 setError(errors.message);
             });
-        // }
-        // fetch(`https://dummyjson.com/products/search?q=${search}`)
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         setProducts(data.products);
-        //     })
-        //     .catch((errors) => {
-        //         setError(errors.message);
-        //     });
     }, []);
 
     const handleSearch = async (searchValue: string) => {

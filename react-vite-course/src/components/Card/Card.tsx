@@ -7,7 +7,7 @@ interface IProps {
     product: IProducts;
 }
 const Card = (product: IProps) => {
-    const { title, price, images, description, brand } = product.product;
+    const { title, price, images, id } = product.product;
     const [isModalOpen, setModalState] = useState(false);
     const toggleModal = () => setModalState(!isModalOpen);
     return (
@@ -18,17 +18,7 @@ const Card = (product: IProps) => {
             <div className="card__title">Title: {title}</div>
             <div className="card__price">Price: ${price}</div>
 
-            <Modal isOpen={isModalOpen} onClose={toggleModal}>
-                <div className={styles.card__img}>
-                    <img src={images[0]} alt="product" />
-                </div>
-                <div className="card__title">Title: {title}</div>
-                <div className="card__brand">Brand: {brand}</div>
-                <div className="card__price">Price: ${price}</div>
-                <div className="card__description">
-                    Description: {description}
-                </div>
-            </Modal>
+            <Modal idCard={id} isOpen={isModalOpen} onClose={toggleModal} />
         </div>
     );
 };

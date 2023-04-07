@@ -3,7 +3,7 @@ import Form from '../components/Form/Form';
 import Users from '../components/Users/Users';
 import { IUser } from '../interface';
 
-const FormPage: React.FC = () => {
+const FormPage = () => {
     const [users, setUsers] = useState<IUser[]>([]);
 
     const addNewUser = (newUser: IUser) => {

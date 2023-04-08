@@ -1,12 +1,19 @@
-import { render } from '@testing-library/react';
-import React from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { useForm } from 'react-hook-form';
 import { describe, it } from 'vitest';
-import SelectCustom from './SelectCustom';
+import SelectorCustom from './SelectCustom';
 
 describe('SelectCustom', () => {
-    it('renders SelectCustom component', () => {
-        const country: React.RefObject<HTMLSelectElement> = React.createRef();
-        const countryError = 'str';
-        render(<SelectCustom ref={country} errorMess={countryError} />);
+    it('should change the selected option value', () => {
+        interface IFormInput {
+            country: string;
+        }
+        const { register } = useForm<IFormInput>();
+        render(<SelectorCustom {...register('country')} />);
+        const selectElement = screen.getByRole('combobox', {
+            name: 'Country:',
+        }) as HTMLSelectElement;
+        fireEvent.change(selectElement, { target: { value: 'Ukraine' } });
+        expect(selectElement.value).toBe('Ukraine');
     });
 });

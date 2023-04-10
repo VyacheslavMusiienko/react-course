@@ -4,6 +4,23 @@ import { describe, it, vi } from 'vitest';
 import Cards from './Cards';
 
 describe('Cards', () => {
+    it('Render characters', async () => {
+        render(
+            <BrowserRouter>
+                <Cards />
+            </BrowserRouter>
+        );
+
+        const characters = await screen.findAllByText(/title/i);
+        const characters1 = await screen.findAllByText(/price/i);
+        characters.forEach((character) => {
+            expect(character).toBeInTheDocument();
+        });
+        characters1.forEach((character) => {
+            expect(character).toBeInTheDocument();
+        });
+    });
+
     it('renders Cards', () => {
         render(
             <BrowserRouter>

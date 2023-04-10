@@ -30,6 +30,22 @@ describe('Cards', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
+    it('should write to localstorage', async () => {
+        localStorage.setItem('searchValue', 'iphone');
+        render(
+            <BrowserRouter>
+                <Cards />
+            </BrowserRouter>
+        );
+
+        await waitFor(async () => {
+            const characters = screen.findAllByText(/iphone/i);
+            (await characters).forEach((character) => {
+                expect(character).toBeInTheDocument();
+            });
+        });
+    });
+
     it('should render an error message when there is an error', async () => {
         const errorMessage = 'An error occurred';
         vi.spyOn(global, 'fetch').mockRejectedValue(new Error(errorMessage));

@@ -1,9 +1,14 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, vi } from 'vitest';
 import Cards from './Cards';
 
 describe('Cards', () => {
+    const onSearchMock = vi.fn();
+    const searchValue = 'test search value';
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
     it('Render characters', async () => {
         render(
             <BrowserRouter>
@@ -43,6 +48,19 @@ describe('Cards', () => {
             (await characters).forEach((character) => {
                 expect(character).toBeInTheDocument();
             });
+        });
+    });
+
+    it('should update searchValue state on input change', async () => {
+        render(
+            <BrowserRouter>
+                <Cards />
+            </BrowserRouter>
+        );
+        await waitFor(async () => {
+            const input = screen.getByRole('textbox');
+            fireEvent.change(input, { target: { value: searchValue } });
+            expect(input).toHaveValue(searchValue);
         });
     });
 

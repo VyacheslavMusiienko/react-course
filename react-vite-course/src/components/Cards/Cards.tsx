@@ -1,91 +1,76 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { IProducts } from '../../interface';
+import { productsApi } from '../../service/productService';
 import Card from '../Card/Card';
-import Search from '../Search/Search';
 import styles from './Cards.module.scss';
 
 const Cards = () => {
-    const [products, setProducts] = useState<IProducts[] | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const {
+        data: products,
+        error,
+        isLoading,
+    } = productsApi.useFetchAllUsersQuery(10);
 
-    const initSearchValue: string = localStorage.getItem('searchValue') || '';
-    const [searchParams, setSearchParams] = useSearchParams({
-        search: initSearchValue,
-    });
-    const getSearchParams = searchParams.get('search');
+    // redux state
+    // const { products, isLoading, error } = useAppSelector(
+    //     (state) => state.productsReducer
+    // );
+    // const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        const initialParams = new URLSearchParams(window.location.search);
-        if (getSearchParams !== null && getSearchParams.length !== 0) {
-            initialParams.set('search', getSearchParams);
-            window.history.pushState(
-                {},
-                '',
-                `${window.location.pathname}?${initialParams}`
-            );
-            setSearchParams(initialParams);
-        }
-    }, [setSearchParams, getSearchParams]);
+    // useEffect(() => {
+    //     dispatch(getProducts());
+    // }, [dispatch]);
 
-    useEffect(() => {
-        if (initSearchValue.length === 0) {
-            fetch('https://dummyjson.com/products?limit=10')
-                .then((response) => response.json())
-                .then((data) => {
-                    setProducts(data.products);
-                })
-                .catch((errors) => {
-                    setError(errors.message);
-                });
-        }
-        fetch(`https://dummyjson.com/products/search?q=${initSearchValue}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setProducts(data.products);
-            })
-            .catch((errors) => {
-                setError(errors.message);
-            });
-    }, [initSearchValue]);
+    // props value
+    // const [products, setProducts] = useState<IProducts[] | null>(null);
+    // const [error, setError] = useState<string | null>(null);
 
-    const handleSearch = async (searchValue: string) => {
-        localStorage.setItem('searchValue', searchValue);
+    // const initSearchValue: string = localStorage.getItem('searchValue') || '';
 
-        let search;
-        if (searchValue) {
-            search = {
-                search: searchValue,
-            };
-        } else {
-            search = undefined;
-        }
-        setSearchParams(search, { replace: true });
+    // useEffect(() => {
+    //     if (initSearchValue.length === 0) {
+    //         fetch('https://dummyjson.com/products?limit=10')
+    //             .then((response) => response.json())
+    //             .then((data) => {
+    //                 setProducts(data.products);
+    //             })
+    //             .catch((errors) => {
+    //                 setError(errors.message);
+    //             });
+    //     }
+    //     fetch(`https://dummyjson.com/products/search?q=${initSearchValue}`)
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             setProducts(data.products);
+    //         })
+    //         .catch((errors) => {
+    //             setError(errors.message);
+    //         });
+    // }, [initSearchValue]);
 
-        fetch(`https://dummyjson.com/products/search?q=${searchValue}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setProducts(data.products);
-            })
-            .catch((errors) => {
-                setError(errors.message);
-            });
-    };
+    // const handleSearch = async (searchValue: string) => {
+    //     fetch(`https://dummyjson.com/products/search?q=${searchValue}`)
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             setProducts(data.products);
+    //         })
+    //         .catch((errors) => {
+    //             setError(errors.message);
+    //         });
+    // };
 
     if (error) {
-        return <div>{error}</div>;
+        return <div>eroor</div>;
     }
 
-    if (!products) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 
     return (
         <div className="cards">
-            <Search onSearch={handleSearch} />
+            {/* <Search onSearch={handleSearch} /> */}
             <div className={styles.cards__box}>
-                {products.length > 0 ? (
-                    products.map((product) => {
+                {products && products.products.length > 0 ? (
+                    products.products.map((product) => {
                         return <Card key={product.id} product={product} />;
                     })
                 ) : (

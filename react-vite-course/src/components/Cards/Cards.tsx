@@ -10,7 +10,9 @@ const Cards = () => {
         data: products,
         error,
         isLoading,
-    } = productsApi.useFetchAllProductQuery(input);
+    } = productsApi.useFetchAllProductQuery(input, {
+        refetchOnMountOrArgChange: true,
+    });
 
     const handleSearch = (searchValue: string) => {
         setInput(searchValue);

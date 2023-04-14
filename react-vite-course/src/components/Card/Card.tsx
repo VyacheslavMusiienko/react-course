@@ -9,17 +9,26 @@ interface IProps {
 const Card = (product: IProps) => {
     const { title, price, images, id } = product.product;
     const [isModalOpen, setModalState] = useState(false);
-    const toggleModal = () => setModalState(!isModalOpen);
+    const [modalID, setModalID] = useState(0);
+
+    const toggleModal = () => {
+        setModalID(id);
+        setModalState(!isModalOpen);
+    };
 
     return (
-        <div className={styles.card} onClick={toggleModal}>
+        <div className={styles.card} onClick={() => toggleModal()}>
             <div className={styles.card__img}>
                 <img src={images[0]} alt="product" />
             </div>
             <div className="card__title">Title: {title}</div>
             <div className="card__price">Price: ${price}</div>
 
-            <Modal idCard={id} isOpen={isModalOpen} onClose={toggleModal} />
+            <Modal
+                idCard={modalID}
+                isOpen={isModalOpen}
+                onClose={toggleModal}
+            />
         </div>
     );
 };

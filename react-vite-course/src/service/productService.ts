@@ -10,9 +10,17 @@ export const productsApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: 'https://dummyjson.com' }),
     endpoints: (builder) => ({
         fetchAllProduct: builder.query<FetchData, string>({
-            query: (product) => ({
-                url: `/products/search?q=${product}`,
-            }),
+            query: (text) => {
+                if (text !== '') {
+                    return `/products/search?q=${text.toLowerCase()}`;
+                }
+                return '/products';
+            },
+        }),
+        fetchSingleProduct: builder.query<IProducts, number>({
+            query: (id) => {
+                return `/products/${id}`;
+            },
         }),
     }),
 });

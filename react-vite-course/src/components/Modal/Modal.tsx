@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { IProducts } from '../../interface';
+import { useEffect } from 'react';
+import { productsApi } from '../../service/productService';
 import styles from './Modal.module.scss';
 
 interface IModalProps {
@@ -9,28 +9,23 @@ interface IModalProps {
 }
 
 const Modal = ({ isOpen, onClose, idCard }: IModalProps) => {
-    const [product, setProduct] = useState<IProducts | null>(null);
-    const [errorM, setErrorM] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (isOpen) {
-            fetch(`https://dummyjson.com/products/${idCard}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    setProduct(data);
-                })
-                .catch((errors) => {
-                    setErrorM(errors.message);
-                });
-        }
-    }, [idCard, isOpen]);
+    const {
+        data: product,
+        error,
+        isLoading,
+    } = productsApi.useFetchSingleProductQuery(idCard, { skip: !idCard });
 
     const renderModalContent = () => {
-        if (errorM) {
-            return <div>{errorM}</div>;
+        if (error) {
+            return (
+                <div>
+                    <h1>Oops!</h1>
+                    <p>Sorry, an unexpected error has occurred.</p>
+                </div>
+            );
         }
 
-        if (!product) {
+        if (isLoading) {
             return <div>Loading...</div>;
         }
         return (

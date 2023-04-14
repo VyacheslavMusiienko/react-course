@@ -18,27 +18,23 @@ const initialState: ProductState = {
 export const productSlice = createSlice({
     name: 'product',
     initialState,
-    reducers: {
-        increment(state, action: PayloadAction<number>) {
-            state.count += action.payload;
-        },
-    },
+    reducers: {},
     extraReducers: {
-        [getProducts.fulfilled.type]: (
-            state,
-            action: PayloadAction<IProducts[]>
-        ) => {
-            state.isLoading = false;
-            state.error = '';
-            state.products = action.payload;
-        },
-        [getProducts.pending.type]: (state) => {
-            state.isLoading = true;
-        },
-        [getProducts.rejected.type]: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
+        // [getProducts.fulfilled.type]: (
+        //     state,
+        //     action: PayloadAction<IProducts[]>
+        // ) => {
+        //     state.isLoading = false;
+        //     state.error = '';
+        //     state.products = action.payload;
+        // },
+        // [getProducts.pending.type]: (state) => {
+        //     state.isLoading = true;
+        // },
+        // [getProducts.rejected.type]: (state, action: PayloadAction<string>) => {
+        //     state.isLoading = false;
+        //     state.error = action.payload;
+        // },
     },
 });
 export default productSlice.reducer;

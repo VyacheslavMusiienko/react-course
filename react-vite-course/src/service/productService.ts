@@ -24,3 +24,5 @@ export const productsApi = createApi({
         }),
     }),
 });
+
+export const { useFetchAllProductQuery } = productsApi;

@@ -1,22 +1,18 @@
-import { useState } from 'react';
+import { useAppSelector } from '../../hooks/redux';
 import { productsApi } from '../../service/productService';
 import Card from '../Card/Card';
 import Search from '../Search/Search';
 import styles from './Cards.module.scss';
 
 const Cards = () => {
-    const [input, setInput] = useState('');
+    const { value } = useAppSelector((state) => state.productsReducer);
     const {
         data: products,
         error,
         isLoading,
-    } = productsApi.useFetchAllProductQuery(input, {
+    } = productsApi.useFetchAllProductQuery(value, {
         refetchOnMountOrArgChange: true,
     });
-
-    const handleSearch = (searchValue: string) => {
-        setInput(searchValue);
-    };
 
     if (error) {
         return (
@@ -33,7 +29,7 @@ const Cards = () => {
 
     return (
         <div className="cards">
-            <Search onSearch={handleSearch} />
+            <Search />
             <div className={styles.cards__box}>
                 {products && products.products.length > 0 ? (
                     products.products.map((product) => {

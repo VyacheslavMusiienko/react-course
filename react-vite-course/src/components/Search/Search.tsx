@@ -1,23 +1,21 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { productsSlice } from '../../store/reducer/productSlice';
 import styles from './Search.module.scss';
 
-interface ISearchProps {
-    onSearch: (searchValue: string) => void;
-}
-
-const Search = ({ onSearch }: ISearchProps) => {
-    const initSearchValue: string = localStorage.getItem('searchValue') || '';
-    const [searchValue, setSearchValue] = useState(initSearchValue);
-    const searchRef = useRef<string>(searchValue);
+const Search = () => {
+    const { setValue } = productsSlice.actions;
+    const value = useAppSelector((state) => state.productsReducer.value);
+    const dispatch = useAppDispatch();
+    const [searchValue, setSearchValue] = useState(value);
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const newSearchValue = e.target.value.trimStart();
         setSearchValue(newSearchValue);
-        searchRef.current = newSearchValue;
     };
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            onSearch(searchValue);
+            dispatch(setValue(searchValue));
         }
     };
 
@@ -34,7 +32,7 @@ const Search = ({ onSearch }: ISearchProps) => {
             <button
                 type="button"
                 className={`${styles.search__button} btn`}
-                onClick={() => onSearch(searchValue)}
+                onClick={() => dispatch(setValue(searchValue))}
             >
                 Search
             </button>

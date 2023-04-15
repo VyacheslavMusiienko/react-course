@@ -25,7 +25,7 @@ describe('Cards', () => {
             expect(character).toBeInTheDocument();
         });
     });
-
+    
     it('renders Cards', () => {
         render(
             <BrowserRouter>
@@ -33,22 +33,6 @@ describe('Cards', () => {
             </BrowserRouter>
         );
         expect(screen.getByText('Loading...')).toBeInTheDocument();
-    });
-
-    it('should write to localstorage', async () => {
-        localStorage.setItem('searchValue', 'iphone');
-        render(
-            <BrowserRouter>
-                <Cards />
-            </BrowserRouter>
-        );
-
-        await waitFor(async () => {
-            const characters = screen.findAllByText(/iphone/i);
-            (await characters).forEach((character) => {
-                expect(character).toBeInTheDocument();
-            });
-        });
     });
 
     it('should update searchValue state on input change', async () => {

@@ -1,17 +1,19 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useAppDispatch } from '../../hooks/redux';
 import { IUser } from '../../interface';
+import { userSlice } from '../../store/reducer/userSlice';
 import styles from './Form.module.scss';
 import InputCustom from './InputCustom/InputCustom';
 import SelectorCustom from './SelectCustom/SelectCustom';
 
-interface FormProps {
-    addNewUser: (user: IUser) => void;
-}
 type TUserCard = Omit<IUser, 'picture'> & {
     agreement: string;
     picture: FileList;
 };
-const Form = ({ addNewUser }: FormProps) => {
+const Form = () => {
+    const { addNewUser } = userSlice.actions;
+    const dispatch = useAppDispatch();
+
     const {
         register,
         handleSubmit,
@@ -39,7 +41,8 @@ const Form = ({ addNewUser }: FormProps) => {
             gender: data.gender,
             picture: data?.picture?.[0],
         };
-        addNewUser(newUser);
+        // addNewUser(newUser);
+        dispatch(addNewUser(newUser));
         reset();
     };
     return (

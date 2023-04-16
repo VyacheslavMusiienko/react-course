@@ -7,12 +7,11 @@ interface UserProps {
 
 const User = ({ user }: UserProps) => {
     const { name, surname, birthday, country, gender, picture } = user;
-    const imgSrc = picture ? URL.createObjectURL(picture) : '';
 
     return (
         <article className={styles.wrapper}>
             <section className={styles.wrapper__img}>
-                <img src={imgSrc} alt={name} />
+                <img src={picture} alt={name} />
             </section>
             <section>
                 <h3>

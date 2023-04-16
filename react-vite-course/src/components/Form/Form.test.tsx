@@ -23,6 +23,7 @@ describe('Form', () => {
         globalThis.URL.createObjectURL = vi.fn();
 
         const file = new File(['image'], 'image.jpeg', { type: 'image/jpeg' });
+        const blob = new Blob(['image'], { type: 'image/jpeg' });
         await act(async () => {
             fireEvent.change(screen.getAllByRole('textbox')[0], {
                 target: { value: 'John' },
@@ -43,7 +44,7 @@ describe('Form', () => {
                 'Choose a picture of something:'
             );
             fireEvent.change(input, {
-                target: { files: [file] },
+                target: { files: [blob] },
             });
             fireEvent.click(screen.getByRole('checkbox'));
             fireEvent.click(screen.getByRole('button', { name: 'Submit' }));

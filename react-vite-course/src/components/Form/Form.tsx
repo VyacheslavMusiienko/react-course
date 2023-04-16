@@ -6,10 +6,9 @@ import styles from './Form.module.scss';
 import InputCustom from './InputCustom/InputCustom';
 import SelectorCustom from './SelectCustom/SelectCustom';
 
-type TUserCard = Omit<IUser, 'picture'> & {
+interface TUserCard extends IUser {
     agreement: string;
-    picture: FileList;
-};
+}
 const Form = () => {
     const { addNewUser } = userSlice.actions;
     const dispatch = useAppDispatch();
@@ -39,7 +38,7 @@ const Form = () => {
             birthday: data.birthday,
             country: data.country,
             gender: data.gender,
-            picture: data?.picture?.[0],
+            picture: URL.createObjectURL(data?.picture?.[0] as unknown as Blob),
         };
         dispatch(addNewUser(newUser));
         reset();

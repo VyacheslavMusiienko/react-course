@@ -2,7 +2,7 @@ export interface IUser {
     name: string | undefined;
     surname: string | undefined;
     birthday: string | undefined;
-    picture: Blob | undefined;
+    picture: string | undefined;
     country: string | undefined;
     gender: string | null;
 }

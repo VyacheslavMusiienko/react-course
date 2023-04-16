@@ -1,17 +1,20 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { describe, it, vi } from 'vitest';
+import { describe, it, Mock, vi } from 'vitest';
 import { setupStore } from '../../store/store';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import Search from './Search';
+import { productsSlice } from '../../store/reducer/productSlice';
 
 const store = setupStore();
-
+vi.mock('../../hooks/redux');
 describe('Search', () => {
-    const onSearchMock = vi.fn();
-    const searchValue = 'test search value';
     beforeEach(() => {
-        vi.clearAllMocks();
+        (useAppSelector as Mock).mockReturnValue('');
     });
+    const mockDispatch = vi.fn();
+    (useAppDispatch as Mock).mockReturnValue(mockDispatch);
+    const { setValue } = productsSlice.actions;
 
     it('should render correctly', () => {
         render(
@@ -32,8 +35,8 @@ describe('Search', () => {
             </Provider>
         );
         const input = screen.getByRole('textbox');
-        fireEvent.change(input, { target: { value: searchValue } });
-        expect(input).toHaveValue(searchValue);
+        fireEvent.change(input, { target: { value: 'test value' } });
+        expect(input).toHaveValue('test value');
     });
 
     it('should call onSearch function with searchValue on button click', () => {
@@ -44,9 +47,9 @@ describe('Search', () => {
         );
         const button = screen.getByRole('button', { name: 'Search' });
         const input = screen.getByRole('textbox');
-        fireEvent.change(input, { target: { value: searchValue } });
+        fireEvent.change(input, { target: { value: 'test value' } });
         fireEvent.click(button);
-        expect(onSearchMock).toHaveBeenCalledWith(searchValue);
+        expect(mockDispatch).toHaveBeenCalledWith(setValue('test value'));
     });
 
     it('should call onSearch function with searchValue on enter press', () => {
@@ -56,8 +59,8 @@ describe('Search', () => {
             </Provider>
         );
         const input = screen.getByRole('textbox');
-        fireEvent.change(input, { target: { value: searchValue } });
+        fireEvent.change(input, { target: { value: 'test value' } });
         fireEvent.keyDown(input, { key: 'Enter' });
-        expect(onSearchMock).toHaveBeenCalledWith(searchValue);
+        expect(mockDispatch).toHaveBeenCalledWith(setValue('test value'));
     });
 });

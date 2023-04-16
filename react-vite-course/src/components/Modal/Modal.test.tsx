@@ -1,11 +1,17 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { describe, it, vi } from 'vitest';
+import { setupStore } from '../../store/store';
 import Modal from './Modal';
+
+const store = setupStore();
 
 describe('Modal', () => {
     it('render component Modal', () => {
         const { getByText } = render(
-            <Modal isOpen onClose={vi.fn()} idCard={1} />
+            <Provider store={store}>
+                <Modal isOpen onClose={vi.fn()} idCard={1} />
+            </Provider>
         );
         expect(getByText('Loading...')).toBeInTheDocument();
     });
@@ -13,7 +19,11 @@ describe('Modal', () => {
     it('renders error message when fetch fails', async () => {
         vi.spyOn(global, 'fetch').mockRejectedValue(new Error('Fetch failed'));
 
-        render(<Modal isOpen onClose={vi.fn()} idCard={1} />);
+        render(
+            <Provider store={store}>
+                <Modal isOpen onClose={vi.fn()} idCard={1} />
+            </Provider>
+        );
 
         await waitFor(() => {
             expect(screen.getByText('Fetch failed')).toBeInTheDocument();
@@ -36,7 +46,11 @@ describe('Modal', () => {
         };
         vi.spyOn(global, 'fetch').mockResolvedValue(mockedResponse as Response);
 
-        render(<Modal isOpen onClose={vi.fn()} idCard={1} />);
+        render(
+            <Provider store={store}>
+                <Modal isOpen onClose={vi.fn()} idCard={1} />
+            </Provider>
+        );
 
         expect(screen.getByText('Loading...')).toBeInTheDocument();
 

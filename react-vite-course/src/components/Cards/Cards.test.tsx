@@ -1,19 +1,24 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, vi } from 'vitest';
+import { setupStore } from '../../store/store';
 import Cards from './Cards';
 
+const store = setupStore();
+
 describe('Cards', () => {
-    const onSearchMock = vi.fn();
     const searchValue = 'test search value';
     beforeEach(() => {
         vi.clearAllMocks();
     });
     it('Render characters', async () => {
         render(
-            <BrowserRouter>
-                <Cards />
-            </BrowserRouter>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Cards />
+                </BrowserRouter>
+            </Provider>
         );
 
         const characters = await screen.findAllByText(/title/i);
@@ -25,21 +30,25 @@ describe('Cards', () => {
             expect(character).toBeInTheDocument();
         });
     });
-    
+
     it('renders Cards', () => {
         render(
-            <BrowserRouter>
-                <Cards />
-            </BrowserRouter>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Cards />
+                </BrowserRouter>
+            </Provider>
         );
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('should update searchValue state on input change', async () => {
         render(
-            <BrowserRouter>
-                <Cards />
-            </BrowserRouter>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Cards />
+                </BrowserRouter>
+            </Provider>
         );
         await waitFor(async () => {
             const input = screen.getByRole('textbox');
@@ -52,9 +61,11 @@ describe('Cards', () => {
         const errorMessage = 'An error occurred';
         vi.spyOn(global, 'fetch').mockRejectedValue(new Error(errorMessage));
         render(
-            <BrowserRouter>
-                <Cards />
-            </BrowserRouter>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Cards />
+                </BrowserRouter>
+            </Provider>
         );
         await waitFor(() =>
             expect(screen.getByText(errorMessage)).toBeInTheDocument()

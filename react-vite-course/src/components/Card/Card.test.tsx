@@ -1,6 +1,10 @@
 import { render } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { describe, it } from 'vitest';
+import { setupStore } from '../../store/store';
 import Card from './Card';
+
+const store = setupStore();
 
 describe('Card', () => {
     it('renders Card component', () => {
@@ -17,6 +21,10 @@ describe('Card', () => {
             thumbnail: 'string',
             images: ['string', 'string', 'string'],
         };
-        render(<Card product={props} />);
+        render(
+            <Provider store={store}>
+                <Card product={props} />
+            </Provider>
+        );
     });
 });

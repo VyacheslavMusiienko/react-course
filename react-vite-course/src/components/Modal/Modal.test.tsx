@@ -38,25 +38,24 @@ describe('Modal', () => {
 
     it('renders product details', async () => {
         const product = {
-            product: {
-                id: 1,
-                title: 'Product 1',
-                description: 'string',
-                price: 3,
-                discountPercentage: 6,
-                rating: 6,
-                stock: 9,
-                brand: 'string',
-                category: 'string',
-                thumbnail: 'string',
-                images: [
-                    'https://via.placeholder.com/150x150.png',
-                    'https://via.placeholder.com/150x150.png',
-                    'https://via.placeholder.com/150x150.png',
-                ],
-            },
+            id: 1,
+            title: 'Microsoft Surface Laptop 4',
+            description: 'Style and speed. Stand out on ...',
+            price: 1499,
+            discountPercentage: 10.23,
+            rating: 4.43,
+            stock: 68,
+            brand: 'Microsoft Surface',
+            category: 'laptops',
+            thumbnail: 'https://i.dummyjson.com/data/products/8/thumbnail.jpg',
+            images: [
+                'https://i.dummyjson.com/data/products/8/1.jpg',
+                'https://i.dummyjson.com/data/products/8/2.jpg',
+                'https://i.dummyjson.com/data/products/8/3.jpg',
+                'https://i.dummyjson.com/data/products/8/4.jpg',
+                'https://i.dummyjson.com/data/products/8/thumbnail.jpg',
+            ],
         };
-
         (productsApi.useFetchSingleProductQuery as Mock).mockReturnValue({
             isLoading: false,
             error: null,
@@ -65,10 +64,15 @@ describe('Modal', () => {
 
         render(<Modal isOpen onClose={vi.fn()} idCard={1} />);
 
-        expect(screen.getByAltText(/product/i)).toBeInTheDocument();
-        expect(screen.getByText(/title: product 1/i)).toBeInTheDocument();
-        expect(screen.getByText(/brand: string/i)).toBeInTheDocument();
-        expect(screen.getByText(/price: \$3/i)).toBeInTheDocument();
-        expect(screen.getByText(/description: string/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/title: Microsoft Surface Laptop 4/i)
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(/brand: Microsoft Surface/i)
+        ).toBeInTheDocument();
+        expect(screen.getByText(/price: \$1499/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/description: Style and speed. Stand out on .../i)
+        ).toBeInTheDocument();
     });
 });

@@ -41,7 +41,6 @@ const Form = () => {
             gender: data.gender,
             picture: data?.picture?.[0],
         };
-        // addNewUser(newUser);
         dispatch(addNewUser(newUser));
         reset();
     };

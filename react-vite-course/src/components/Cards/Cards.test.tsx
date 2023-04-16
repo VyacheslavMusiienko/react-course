@@ -34,41 +34,32 @@ describe('Cards component', () => {
 
     it('renders cards', () => {
         const product = {
-            products: [
-                {
-                    id: 1,
-                    title: 'Product 1',
-                    description: 'string',
-                    price: 3,
-                    discountPercentage: 6,
-                    rating: 6,
-                    stock: 9,
-                    brand: 'string',
-                    category: 'string',
-                    thumbnail: 'string',
-                    images: ['string', 'string', 'string'],
-                },
-                {
-                    id: 2,
-                    title: 'Product 2',
-                    description: 'string',
-                    price: 3,
-                    discountPercentage: 6,
-                    rating: 6,
-                    stock: 9,
-                    brand: 'string',
-                    category: 'string',
-                    thumbnail: 'string',
-                    images: ['string', 'string', 'string'],
-                },
+            id: 1,
+            title: 'Microsoft Surface Laptop 4',
+            description: 'Style and speed. Stand out on ...',
+            price: 1499,
+            discountPercentage: 10.23,
+            rating: 4.43,
+            stock: 68,
+            brand: 'Microsoft Surface',
+            category: 'laptops',
+            thumbnail: 'https://i.dummyjson.com/data/products/8/thumbnail.jpg',
+            images: [
+                'https://i.dummyjson.com/data/products/8/1.jpg',
+                'https://i.dummyjson.com/data/products/8/2.jpg',
+                'https://i.dummyjson.com/data/products/8/3.jpg',
+                'https://i.dummyjson.com/data/products/8/4.jpg',
+                'https://i.dummyjson.com/data/products/8/thumbnail.jpg',
             ],
         };
-        (productsApi.useFetchAllProductQuery as Mock).mockReturnValue({
+        (productsApi.useFetchSingleProductQuery as Mock).mockReturnValue({
+            isLoading: false,
+            error: null,
             data: product,
         });
 
         render(<Cards />);
-        expect(screen.getAllByTestId('user')).toHaveLength(2);
+        expect(screen.getAllByTestId('user')).toHaveLength(1);
     });
 
     it('should render an error message when there is an error', () => {

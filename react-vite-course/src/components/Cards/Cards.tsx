@@ -30,7 +30,7 @@ const Cards = () => {
     return (
         <div className="cards">
             <Search />
-            <div className={styles.cards__box}>
+            <div className={styles.cards__box} data-testid="user">
                 {products && products.products.length > 0 ? (
                     products.products.map((product) => {
                         return <Card key={product.id} product={product} />;

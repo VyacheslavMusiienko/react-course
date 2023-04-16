@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { productsApi } from '../../service/productService';
 import styles from './Modal.module.scss';
 
@@ -31,7 +30,7 @@ const Modal = ({ isOpen, onClose, idCard }: IModalProps) => {
         return (
             <>
                 <div className={styles.modal__img}>
-                    <img src={product?.images[0]} alt="product" />
+                    <img src={product?.images?.[0]} alt="product" />
                 </div>
                 <div className="card__title">Title: {product?.title}</div>
                 <div className="card__brand">Brand: {product?.brand}</div>

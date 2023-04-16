@@ -1,38 +1,26 @@
 import { render, screen } from '@testing-library/react';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
-import { describe, it } from 'vitest';
-import LayoutMain from '../../layout/main/Layout-main';
-import About from '../../page/about-page';
-import ErrorPage from '../../page/error-page';
-import Main from '../../page/main-page';
+import { MemoryRouter } from 'react-router-dom';
 import { pathParams } from '../../routes/pathParams';
+import Navbar from './Navbar';
 
-describe('Navbar', () => {
-    const router = createMemoryRouter(
-        [
-            {
-                path: pathParams.main.path,
-                element: <LayoutMain />,
-                errorElement: <ErrorPage />,
-                children: [
-                    {
-                        element: <Main />,
-                        index: true,
-                    },
-                    {
-                        element: <About />,
-                        path: pathParams.about.path,
-                    },
-                ],
-            },
-        ],
-        {
-            initialEntries: ['/'],
-        }
-    );
-    it('click navbar', async () => {
-        render(<RouterProvider router={router} />);
-        const linkEl = screen.getByRole('link', { name: 'Home' });
-        expect(linkEl.getAttribute('class')).toMatch(/active/i);
+describe('Navbar component', () => {
+    it('renders all navbar items', () => {
+        render(
+            <MemoryRouter>
+                <Navbar />
+            </MemoryRouter>
+        );
+        const navbarItems = screen.getAllByRole('link');
+        expect(navbarItems).toHaveLength(Object.keys(pathParams).length - 1);
+    });
+
+    it('displays the correct path name', () => {
+        render(
+            <MemoryRouter initialEntries={[pathParams.about.path]}>
+                <Navbar />
+            </MemoryRouter>
+        );
+        const pathName = screen.getAllByText(pathParams.about.title)[0];
+        expect(pathName).toBeInTheDocument();
     });
 });

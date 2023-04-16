@@ -1,73 +1,74 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { describe, it, vi } from 'vitest';
-import { setupStore } from '../../store/store';
+import { render, screen } from '@testing-library/react';
+import { Mock, vi } from 'vitest';
+import { productsApi } from '../../service/productService';
 import Modal from './Modal';
 
-const store = setupStore();
+vi.mock('../../service/productService');
 
 describe('Modal', () => {
-    it('render component Modal', () => {
-        const { getByText } = render(
-            <Provider store={store}>
-                <Modal isOpen onClose={vi.fn()} idCard={1} />
-            </Provider>
-        );
-        expect(getByText('Loading...')).toBeInTheDocument();
+    beforeEach(() => {
+        vi.clearAllMocks();
     });
 
-    it('renders error message when fetch fails', async () => {
-        vi.spyOn(global, 'fetch').mockRejectedValue(new Error('Fetch failed'));
-
-        render(
-            <Provider store={store}>
-                <Modal isOpen onClose={vi.fn()} idCard={1} />
-            </Provider>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText('Fetch failed')).toBeInTheDocument();
+    it('renders loading state', async () => {
+        (productsApi.useFetchSingleProductQuery as Mock).mockReturnValue({
+            isLoading: true,
+            error: null,
+            data: undefined,
         });
 
-        (global.fetch as jest.MockedFunction<typeof fetch>).mockRestore();
+        render(<Modal isOpen onClose={vi.fn()} idCard={1} />);
+
+        expect(screen.getByText(/loading/i)).toBeInTheDocument();
     });
 
-    const productMock = {
-        id: 1,
-        title: 'Product Title',
-        brand: 'Product Brand',
-        price: 100,
-        description: 'Product Description',
-        images: ['image1.jpg', 'image2.jpg'],
-    };
-    it('renders modal with product information when isOpen is true and fetch is successful', async () => {
-        const mockedResponse: Partial<Response> = {
-            json: vi.fn().mockResolvedValue(productMock),
+    it('renders error state', async () => {
+        (productsApi.useFetchSingleProductQuery as Mock).mockReturnValue({
+            isLoading: false,
+            error: new Error('An error occurred'),
+            data: undefined,
+        });
+
+        render(<Modal isOpen onClose={vi.fn()} idCard={1} />);
+
+        expect(
+            screen.getByText(/sorry, an unexpected error has occurred/i)
+        ).toBeInTheDocument();
+    });
+
+    it('renders product details', async () => {
+        const product = {
+            product: {
+                id: 1,
+                title: 'Product 1',
+                description: 'string',
+                price: 3,
+                discountPercentage: 6,
+                rating: 6,
+                stock: 9,
+                brand: 'string',
+                category: 'string',
+                thumbnail: 'string',
+                images: [
+                    'https://via.placeholder.com/150x150.png',
+                    'https://via.placeholder.com/150x150.png',
+                    'https://via.placeholder.com/150x150.png',
+                ],
+            },
         };
-        vi.spyOn(global, 'fetch').mockResolvedValue(mockedResponse as Response);
 
-        render(
-            <Provider store={store}>
-                <Modal isOpen onClose={vi.fn()} idCard={1} />
-            </Provider>
-        );
-
-        expect(screen.getByText('Loading...')).toBeInTheDocument();
-
-        await waitFor(() => {
-            expect(
-                screen.getByText('Title: Product Title')
-            ).toBeInTheDocument();
-            expect(
-                screen.getByText('Brand: Product Brand')
-            ).toBeInTheDocument();
-            expect(screen.getByText('Price: $100')).toBeInTheDocument();
-            expect(
-                screen.getByText('Description: Product Description')
-            ).toBeInTheDocument();
-            expect(screen.getByAltText('product')).toBeInTheDocument();
+        (productsApi.useFetchSingleProductQuery as Mock).mockReturnValue({
+            isLoading: false,
+            error: null,
+            data: product,
         });
 
-        (global.fetch as jest.MockedFunction<typeof fetch>).mockRestore();
+        render(<Modal isOpen onClose={vi.fn()} idCard={1} />);
+
+        expect(screen.getByAltText(/product/i)).toBeInTheDocument();
+        expect(screen.getByText(/title: product 1/i)).toBeInTheDocument();
+        expect(screen.getByText(/brand: string/i)).toBeInTheDocument();
+        expect(screen.getByText(/price: \$3/i)).toBeInTheDocument();
+        expect(screen.getByText(/description: string/i)).toBeInTheDocument();
     });
 });

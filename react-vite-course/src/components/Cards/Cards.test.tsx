@@ -1,74 +1,86 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import { describe, it, vi } from 'vitest';
-import { setupStore } from '../../store/store';
+import { render, screen } from '@testing-library/react';
+import { Mock, vi } from 'vitest';
+import { useAppSelector } from '../../hooks/redux';
+import { productsApi } from '../../service/productService';
 import Cards from './Cards';
 
-const store = setupStore();
+vi.mock('../../hooks/redux');
+vi.mock('../../service/productService');
 
-describe('Cards', () => {
-    const searchValue = 'test search value';
+describe('Cards component', () => {
     beforeEach(() => {
-        vi.clearAllMocks();
-    });
-    it('Render characters', async () => {
-        render(
-            <Provider store={store}>
-                <BrowserRouter>
-                    <Cards />
-                </BrowserRouter>
-            </Provider>
-        );
-
-        const characters = await screen.findAllByText(/title/i);
-        const characters1 = await screen.findAllByText(/price/i);
-        characters.forEach((character) => {
-            expect(character).toBeInTheDocument();
-        });
-        characters1.forEach((character) => {
-            expect(character).toBeInTheDocument();
-        });
+        (useAppSelector as Mock).mockReturnValue({ value: 'test' });
     });
 
-    it('renders Cards', () => {
-        render(
-            <Provider store={store}>
-                <BrowserRouter>
-                    <Cards />
-                </BrowserRouter>
-            </Provider>
-        );
+    it('should render "Loading..." when isLoading is true', () => {
+        (productsApi.useFetchAllProductQuery as Mock).mockReturnValue({
+            isLoading: true,
+        });
+
+        render(<Cards />);
+
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
-    it('should update searchValue state on input change', async () => {
-        render(
-            <Provider store={store}>
-                <BrowserRouter>
-                    <Cards />
-                </BrowserRouter>
-            </Provider>
-        );
-        await waitFor(async () => {
-            const input = screen.getByRole('textbox');
-            fireEvent.change(input, { target: { value: searchValue } });
-            expect(input).toHaveValue(searchValue);
+    it('should render "No cards found" when there are no products', () => {
+        (productsApi.useFetchAllProductQuery as Mock).mockReturnValue({
+            data: { products: [] },
         });
+
+        render(<Cards />);
+
+        expect(screen.getByText('No cards found')).toBeInTheDocument();
     });
 
-    it('should render an error message when there is an error', async () => {
-        const errorMessage = 'An error occurred';
-        vi.spyOn(global, 'fetch').mockRejectedValue(new Error(errorMessage));
-        render(
-            <Provider store={store}>
-                <BrowserRouter>
-                    <Cards />
-                </BrowserRouter>
-            </Provider>
-        );
-        await waitFor(() =>
-            expect(screen.getByText(errorMessage)).toBeInTheDocument()
-        );
+    it('renders cards', () => {
+        const product = {
+            products: [
+                {
+                    id: 1,
+                    title: 'Product 1',
+                    description: 'string',
+                    price: 3,
+                    discountPercentage: 6,
+                    rating: 6,
+                    stock: 9,
+                    brand: 'string',
+                    category: 'string',
+                    thumbnail: 'string',
+                    images: ['string', 'string', 'string'],
+                },
+                {
+                    id: 2,
+                    title: 'Product 2',
+                    description: 'string',
+                    price: 3,
+                    discountPercentage: 6,
+                    rating: 6,
+                    stock: 9,
+                    brand: 'string',
+                    category: 'string',
+                    thumbnail: 'string',
+                    images: ['string', 'string', 'string'],
+                },
+            ],
+        };
+        (productsApi.useFetchAllProductQuery as Mock).mockReturnValue({
+            data: product,
+        });
+
+        render(<Cards />);
+        expect(screen.getAllByTestId('user')).toHaveLength(2);
+    });
+
+    it('should render an error message when there is an error', () => {
+        (productsApi.useFetchAllProductQuery as Mock).mockReturnValue({
+            error: { message: 'Error message' },
+        });
+
+        render(<Cards />);
+
+        expect(screen.getByText('Oops!')).toBeInTheDocument();
+        expect(
+            screen.getByText('Sorry, an unexpected error has occurred.')
+        ).toBeInTheDocument();
     });
 });

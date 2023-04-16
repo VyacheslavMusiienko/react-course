@@ -1,13 +1,25 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { describe, it, vi } from 'vitest';
 import Form from './Form';
+import { setupStore } from '../../store/store';
+
+const store = setupStore();
 
 describe('Form', () => {
     it('renders Form component', () => {
-        render(<Form addNewUser={vi.fn()} />);
+        render(
+            <Provider store={store}>
+                <Form />
+            </Provider>
+        );
     });
     it('test form in FomComponent', async () => {
-        render(<Form addNewUser={vi.fn()} />);
+        render(
+            <Provider store={store}>
+                <Form />
+            </Provider>
+        );
         globalThis.URL.createObjectURL = vi.fn();
 
         const file = new File(['image'], 'image.jpeg', { type: 'image/jpeg' });
@@ -39,7 +51,11 @@ describe('Form', () => {
     });
 
     it('shows error message for required fields when submitting empty form', async () => {
-        render(<Form addNewUser={vi.fn()} />);
+        render(
+            <Provider store={store}>
+                <Form />
+            </Provider>
+        );
         const submitButton = screen.getByRole('button', { name: /submit/i });
         fireEvent.click(submitButton);
 

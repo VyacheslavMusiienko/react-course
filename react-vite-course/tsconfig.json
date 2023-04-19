@@ -24,7 +24,7 @@
             }
         ]
     },
-    "include": ["vite.config.ts", ".eslintrc.cjs", "./server.ts", "./cypress/e2e/spec.cy.ts","src"],
+    "include": ["vite.config.ts", ".eslintrc.cjs", "./server.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs","src"],
     "references": [{ "path": "./tsconfig.node.json" }],
     "ts-node": {
         "esm": true

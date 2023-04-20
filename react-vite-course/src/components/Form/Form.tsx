@@ -45,7 +45,6 @@ const Form = () => {
     };
     return (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-            <label>First Name</label>
             <div className="form__name">
                 <h1>Form</h1>
             </div>

@@ -50,6 +50,6 @@ async function startServer() {
 
 startServer().then((app) => {
     app.listen(PORT, () => {
-        console.log(`Server is running >>> http://localhost:${PORT}`);
+        console.log(`Server is running: http://localhost:${PORT}`);
     });
 });

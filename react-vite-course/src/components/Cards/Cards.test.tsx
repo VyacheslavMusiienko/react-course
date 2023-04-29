@@ -70,8 +70,6 @@ describe('Cards component', () => {
         render(<Cards />);
 
         expect(screen.getByText('Oops!')).toBeInTheDocument();
-        expect(
-            screen.getByText('Sorry, an unexpected error has occurred.')
-        ).toBeInTheDocument();
+        expect(screen.getByText('Sorry, an unexpected error has occurred.')).toBeInTheDocument();
     });
 });

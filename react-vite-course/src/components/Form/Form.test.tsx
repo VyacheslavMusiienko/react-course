@@ -1,8 +1,8 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { describe, it, vi } from 'vitest';
-import Form from './Form';
 import { setupStore } from '../../store/store';
+import Form from './Form';
 
 const store = setupStore();
 
@@ -22,7 +22,6 @@ describe('Form', () => {
         );
         globalThis.URL.createObjectURL = vi.fn();
 
-        const file = new File(['image'], 'image.jpeg', { type: 'image/jpeg' });
         const blob = new Blob(['image'], { type: 'image/jpeg' });
         await act(async () => {
             fireEvent.change(screen.getAllByRole('textbox')[0], {
@@ -31,18 +30,14 @@ describe('Form', () => {
             fireEvent.change(screen.getAllByRole('textbox')[1], {
                 target: { value: 'Travolta' },
             });
-            const dateInput = screen.getByLabelText(
-                'Select your date of birth:'
-            );
+            const dateInput = screen.getByLabelText('Select your date of birth:');
             fireEvent.change(dateInput, { target: { value: '1990-01-01' } });
 
             fireEvent.change(screen.getByRole('combobox'), {
                 target: { value: 'Ukraine' },
             });
             fireEvent.click(screen.getAllByRole('radio')[0]);
-            const input = screen.getByLabelText(
-                'Choose a picture of something:'
-            );
+            const input = screen.getByLabelText('Choose a picture of something:');
             fireEvent.change(input, {
                 target: { files: [blob] },
             });

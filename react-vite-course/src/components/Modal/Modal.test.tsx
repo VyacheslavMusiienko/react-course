@@ -31,9 +31,7 @@ describe('Modal', () => {
 
         render(<Modal isOpen onClose={vi.fn()} idCard={1} />);
 
-        expect(
-            screen.getByText(/sorry, an unexpected error has occurred/i)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/sorry, an unexpected error has occurred/i)).toBeInTheDocument();
     });
 
     it('renders product details', async () => {
@@ -64,12 +62,8 @@ describe('Modal', () => {
 
         render(<Modal isOpen onClose={vi.fn()} idCard={1} />);
 
-        expect(
-            screen.getByText(/title: Microsoft Surface Laptop 4/i)
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(/brand: Microsoft Surface/i)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/title: Microsoft Surface Laptop 4/i)).toBeInTheDocument();
+        expect(screen.getByText(/brand: Microsoft Surface/i)).toBeInTheDocument();
         expect(screen.getByText(/price: \$1499/i)).toBeInTheDocument();
         expect(
             screen.getByText(/description: Style and speed. Stand out on .../i)

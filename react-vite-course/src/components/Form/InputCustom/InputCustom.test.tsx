@@ -7,12 +7,6 @@ describe('InputCustom', () => {
     it('renders InputCustom component', () => {
         const surname: React.RefObject<HTMLInputElement> = React.createRef();
 
-        render(
-            <InputCustom
-                title="Last Name:"
-                placeholder="Enter last name"
-                ref={surname}
-            />
-        );
+        render(<InputCustom title="Last Name:" placeholder="Enter last name" ref={surname} />);
     });
 });

@@ -1,61 +1,55 @@
 import express from 'express';
-import { readFile } from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { createServer as createViteServer } from 'vite';
+import { createServer } from 'vite';
 
-import cors from 'cors';
+import fs from 'fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const indexHTML = path.resolve(__dirname, 'index.html');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3001;
 
-async function createServer() {
-    const app = express();
-    app.use(cors());
-    const vite = await createViteServer({
-        server: { middlewareMode: true },
-        appType: 'custom',
-    });
+async function startServer() {
+  const app = express();
+  const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom' });
 
-    app.use(vite.middlewares);
+  app.use(vite.middlewares);
 
-    app.use('*', async (req, res, next) => {
-        const url = req.originalUrl;
-        try {
-            let modelPage = await readFile(
-                path.resolve(__dirname, 'index.html'),
-                'utf-8'
-            );
-            modelPage = await vite.transformIndexHtml(url, modelPage);
+  app.use('*', async (request, response) => {
+    const url = request.originalUrl;
 
-            const parts = modelPage.split('<!--ssr-body-->');
+    try {
+      const template = fs.readFileSync(indexHTML, 'utf8');
+      const transformHTML = await vite.transformIndexHtml(url, template);
+      const [startHTML, endHTML] = transformHTML.split('<!--app-->');
 
-            const { render } = await vite.ssrLoadModule(
-                '/src/entry-server.tsx'
-            );
-            const { pipe } = await render(url, {
-                onShellReady() {
-                    res.write(parts[0]);
-                    pipe(res);
-                },
-                onAllReady() {
-                    res.write(parts[1]);
-                    res.end();
-                },
-            });
-        } catch (e) {
-            if (e instanceof Error) {
-                vite.ssrFixStacktrace(e);
-                next(e);
-            }
-        }
-    });
+      const render = (await vite.ssrLoadModule('./src/entry-server.tsx')).render;
 
-    app.listen(PORT, () =>
-        // eslint-disable-next-line no-console
-        console.log(`Server started at http://localhost:${PORT}`)
-    );
+      try {
+        response.write(startHTML);
+        const stream = render(url, {
+          onShellReady() {
+            stream.pipe(response);
+          },
+          onAllReady() {
+            response.write(endHTML);
+            response.end();
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  return app;
 }
 
-createServer();
+startServer().then((app) => {
+  app.listen(PORT, () => {
+    console.log(`Server is running >>> http://localhost:${PORT}`);
+  });
+});

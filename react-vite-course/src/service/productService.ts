@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IProducts } from '../interface';
+import { IProducts } from '../app/types/interfaces';
 
 type FetchData = {
     products: IProducts[];

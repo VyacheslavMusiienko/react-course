@@ -1,24 +1,21 @@
-describe('Check Form page', () => {
-    beforeEach(() => {
-        cy.visit('/form');
-    });
-    it('open form page', () => {
-        cy.contains('Form');
-    });
-    it('error message in form', () => {
-        cy.get('button[type=submit]').click();
-        cy.contains('Required field');
-    });
-    it('add user', () => {
-        cy.get('input[name="name"]').type('Test');
-        cy.get('input[name="surname"]').type('Test');
-        cy.get('input[name="birthday"]').type('1990-01-01');
-        cy.get('input[name="picture"]').selectFile('./src/assets/scrin.jpg');
-        cy.get('[type="radio"]').first().check();
-        cy.get('[type="checkbox"]').check();
-        cy.get('[id="country"]').select('Ukraine');
-        cy.get('button[type=submit]').click();
-        cy.contains('Test Test');
-    });
+describe('form page', () => {
+  beforeEach(() => {
+    cy.visit('/form');
+  });
+
+  it('renders validation alert', () => {
+    cy.get('form').submit();
+    cy.contains('Please upload an image');
+  });
+
+  it('created a product card', () => {
+    cy.get('input').eq(0).type('Nokia 3310');
+    cy.get('input').eq(1).type('2020-04-05');
+    cy.get('select').select('Nokia');
+    cy.get('input').eq(2).click();
+    cy.get('input').eq(4).selectFile('cypress/fixtures/nokia3310.jpg');
+    cy.get('input').eq(5).click();
+    cy.get('form').submit();
+    cy.contains('Product card has been successfully created.');
+  });
 });
-export {};

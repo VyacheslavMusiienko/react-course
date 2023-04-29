@@ -1,32 +1,22 @@
 {
-    "compilerOptions": {
-        "noImplicitAny": true,
-        "noFallthroughCasesInSwitch": true,
-        "esModuleInterop": true,
-        "baseUrl": "./src",
-        "target": "ESNext",
-        "useDefineForClassFields": true,
-        "lib": ["DOM", "DOM.Iterable", "ESNext"],
-        "allowJs": false,
-        "skipLibCheck": true,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "module": "ESNext",
-        "moduleResolution": "Node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react-jsx",
-        "plugins": [
-            {
-                "name": "typescript-plugin-css-modules"
-            }
-        ]
-    },
-    "include": ["vite.config.ts", ".eslintrc.cjs", "./server.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs","src"],
-    "references": [{ "path": "./tsconfig.node.json" }],
-    "ts-node": {
-        "esm": true
-    }
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["vite.config.ts", ".eslintrc.cjs", "src"],
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "ts-node": { "esm": true, "experimentalSpecifierResolution": "node" }
 }

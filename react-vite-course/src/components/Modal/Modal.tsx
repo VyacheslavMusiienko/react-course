@@ -35,9 +35,7 @@ const Modal = ({ isOpen, onClose, idCard }: IModalProps) => {
                 <div className="card__title">Title: {product?.title}</div>
                 <div className="card__brand">Brand: {product?.brand}</div>
                 <div className="card__price">Price: ${product?.price}</div>
-                <div className="card__description">
-                    Description: {product?.description}
-                </div>
+                <div className="card__description">Description: {product?.description}</div>
             </>
         );
     };
@@ -45,15 +43,9 @@ const Modal = ({ isOpen, onClose, idCard }: IModalProps) => {
     return isOpen ? (
         <div className={styles.modal}>
             <div className={styles.modal__overlay} />
-            <div
-                className={styles.modal__box}
-                onClick={(e) => e.stopPropagation()}
-            >
+            <div className={styles.modal__box} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.modal__close}>
-                    <button
-                        className={styles.modal__close_btn}
-                        onClick={onClose}
-                    >
+                    <button className={styles.modal__close_btn} onClick={onClose}>
                         ×
                     </button>
                 </div>

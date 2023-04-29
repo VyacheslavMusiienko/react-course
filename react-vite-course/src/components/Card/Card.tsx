@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IProducts } from '../../interface';
+import { IProducts } from '../../app/types/interfaces';
 import Modal from '../Modal/Modal';
 import styles from './Card.module.scss';
 
@@ -24,11 +24,7 @@ const Card = (product: IProps) => {
             <div className="card__title">Title: {title}</div>
             <div className="card__price">Price: ${price}</div>
 
-            <Modal
-                idCard={modalID}
-                isOpen={isModalOpen}
-                onClose={toggleModal}
-            />
+            <Modal idCard={modalID} isOpen={isModalOpen} onClose={toggleModal} />
         </div>
     );
 };

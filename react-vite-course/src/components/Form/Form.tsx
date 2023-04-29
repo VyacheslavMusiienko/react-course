@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../hooks/redux';
-import { IUser } from '../../interface';
+
+import { IUser } from '../../app/types/interfaces';
 import { userSlice } from '../../store/reducer/userSlice';
 import styles from './Form.module.scss';
 import InputCustom from './InputCustom/InputCustom';

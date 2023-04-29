@@ -19,9 +19,7 @@ const Navbar = () => {
             <li className={styles.navbar__item} key={key}>
                 <NavLink
                     to={value.path}
-                    className={({ isActive }) =>
-                        isActive ? styles.active : ''
-                    }
+                    className={({ isActive }) => (isActive ? styles.active : '')}
                 >
                     {value.title}
                 </NavLink>

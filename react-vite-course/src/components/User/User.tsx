@@ -1,4 +1,4 @@
-import { IUser } from '../../interface';
+import { IUser } from '../../app/types/interfaces';
 import styles from './User.module.scss';
 
 interface UserProps {

@@ -1,9 +1,9 @@
-describe('about page', () => {
-  beforeEach(() => {
-    cy.visit('/about');
-  });
-
-  it('renders page content', () => {
-    cy.contains('Lorem ipsum dolor');
-  });
+describe('Check About page', () => {
+    beforeEach(() => {
+        cy.visit('/about');
+    });
+    it('open about page', () => {
+        cy.contains('About');
+    });
 });
+export {};

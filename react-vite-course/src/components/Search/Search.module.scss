@@ -1,0 +1,10 @@
+@import '../../assets/style/index.scss';
+.search{
+    &__input{
+        height: 30px;
+        margin-right: 10px;
+    }
+    &__button{
+        background-color: $colorMainBtn;
+    }
+}
